@@ -19,7 +19,7 @@ import com.deltasac.deltanet.models.dao.IPersonaDao;
 import com.deltasac.deltanet.models.entity.Persona;
 
 @Service
-public class PersonaService implements UserDetailsService {
+public class PersonaService implements IPersonaService, UserDetailsService {
 	
 	private Logger logger = LoggerFactory.getLogger(PersonaService.class);
 	
@@ -44,6 +44,12 @@ public class PersonaService implements UserDetailsService {
 				.collect(Collectors.toList());
 		
 		return new User(persona.getUsername(),persona.getPassword(),persona.getEnabled(),true,true,true,authorities);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Persona findByUsername(String username) {
+		return personaDao.findByUsername(username);
 	}
 
 }

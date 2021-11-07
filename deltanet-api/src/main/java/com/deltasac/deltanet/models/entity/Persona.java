@@ -29,6 +29,13 @@ public class Persona implements Serializable {
 	private String password;
 	private Boolean enabled;
 
+	private String nrodoc;
+	private String nomper;
+	private String apeper;
+
+	@Column(unique = true)
+	private String email;
+
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "users_authorities", joinColumns = @JoinColumn(name = "persona_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
 			@UniqueConstraint(columnNames = { "persona_id", "role_id" }) })
@@ -72,6 +79,38 @@ public class Persona implements Serializable {
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+	public String getNrodoc() {
+		return nrodoc;
+	}
+
+	public void setNrodoc(String nrodoc) {
+		this.nrodoc = nrodoc;
+	}
+
+	public String getNomper() {
+		return nomper;
+	}
+
+	public void setNomper(String nomper) {
+		this.nomper = nomper;
+	}
+
+	public String getApeper() {
+		return apeper;
+	}
+
+	public void setApeper(String apeper) {
+		this.apeper = apeper;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	private static final long serialVersionUID = 1L;

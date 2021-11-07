@@ -3,6 +3,7 @@ package com.deltasac.deltanet.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class SolicitudRestController {
 	@Autowired
 	private ISolicitudService solicitudService;
 	
+	@Secured({"ROLE_ADMIN"})
 	@GetMapping("/solicitudes")
 	public List<Solicitud> index(){
 		return solicitudService.findAll();
