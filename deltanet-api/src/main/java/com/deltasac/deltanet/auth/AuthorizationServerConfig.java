@@ -39,7 +39,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory().withClient("deltanetapp").secret(passwordEncoder.encode("D3lt@372")).scopes("read", "write")
-				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(3600)
+				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(7200)
 				.refreshTokenValiditySeconds(3600);
 	}
 
@@ -48,8 +48,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
 		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(infoAdicionalToken,accessTokenConverter()));
 		
-		endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore())
-				.accessTokenConverter(accessTokenConverter());
+		endpoints.authenticationManager(authenticationManager)
+		.tokenStore(tokenStore())
+		.accessTokenConverter(accessTokenConverter())
+		.tokenEnhancer(tokenEnhancerChain);
 	}
 
 	@Bean

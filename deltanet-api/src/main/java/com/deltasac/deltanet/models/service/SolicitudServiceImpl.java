@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.deltasac.deltanet.models.dao.ISolicitudDao;
+import com.deltasac.deltanet.models.entity.Area;
 import com.deltasac.deltanet.models.entity.Solicitud;
 
 @Service
@@ -42,8 +43,19 @@ public class SolicitudServiceImpl implements ISolicitudService {
 	}
 
 	@Override
-	public Page<Solicitud> findAll(Pageable pageable) {
-		return solicitudDao.findAll(pageable);
+	public Page<Solicitud> findAll(Integer id, Pageable pageable) {
+		/*------------------------------------------------------
+		 Si queremos listar todos sin filtro paginado:
+		 
+		 --> return solicitudDao.findAll(pageable);
+		 ------------------------------------------------------*/
+		return solicitudDao.findByidcrea(id, pageable);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<Area> findAllAreas() {
+		return solicitudDao.findAllAreas();
 	}
 
 }
