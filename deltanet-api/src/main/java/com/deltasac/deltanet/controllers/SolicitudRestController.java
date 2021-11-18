@@ -39,7 +39,7 @@ import com.deltasac.deltanet.models.entity.Solicitud;
 import com.deltasac.deltanet.models.service.ISolicitudService;
 import com.deltasac.deltanet.models.service.IUploadFileService;
 
-@CrossOrigin(origins= {"http://localhost:4200"})
+@CrossOrigin(origins= {"http://localhost:4200","http://173.255.202.95:8080"})
 @RestController
 @RequestMapping("/apiSolic")
 public class SolicitudRestController {
