@@ -16,5 +16,7 @@ public interface ISolicitudDao extends JpaRepository<Solicitud, Long> {
 	public List<Area> findAllAreas();
 	
 	public Page<Solicitud> findByidcrea(Integer id, Pageable pageable);
+	
+	public List<Solicitud> findByidcrea(Integer id);
 
 }

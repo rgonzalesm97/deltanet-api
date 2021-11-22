@@ -58,4 +58,10 @@ public class SolicitudServiceImpl implements ISolicitudService {
 		return solicitudDao.findAllAreas();
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public List<Solicitud> findAllIdCrea(Integer id) {
+		return solicitudDao.findByidcrea(id);
+	}
+
 }

@@ -182,6 +182,16 @@ public class SolicitudRestController {
 		return solicitudService.findAll(id,pageable);
 	}
 	
+	/*
+	 * Retorna lista de solicitudes creadas por un usuario (ID)
+	 * 
+	 * */
+	@Secured({"ROLE_ADMIN","ROLE_USER"})
+	@GetMapping("/solicitudes/usuario")
+	public List<Solicitud> listSolUser(@RequestParam("id") Integer id){
+		return solicitudService.findAllIdCrea(id);
+	}
+	
 	@Secured({"ROLE_ADMIN","ROLE_USER"})
 	@PostMapping("/solicitudes/upload")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo,
