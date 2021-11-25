@@ -37,8 +37,6 @@ public class Solicitud implements Serializable {
 	@Column(name = "despeticion", nullable = false)
 	private String desTitulo;
 
-	private String estado;
-
 	@Column(name = "fecCreacion")
 	@Temporal(TemporalType.DATE)
 	private Date createAt;
@@ -92,14 +90,6 @@ public class Solicitud implements Serializable {
 		this.desTitulo = desTitulo;
 	}
 
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
 	public Date getCreateAt() {
 		return createAt;
 	}
@@ -150,7 +140,7 @@ public class Solicitud implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Solicitud [id=" + id + ", titulo=" + titulo + ", desTitulo=" + desTitulo + ", estado=" + estado
+		return "Solicitud [id=" + id + ", titulo=" + titulo + ", desTitulo=" + desTitulo 
 				+ ", createAt=" + createAt + ", imgsol=" + imgsol + ", area=" + area + ", idcrea=" + idcrea
 				+ ", idasignado=" + idasignado + "]";
 	}

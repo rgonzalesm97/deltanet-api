@@ -8,12 +8,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.deltasac.deltanet.models.entity.Area;
+import com.deltasac.deltanet.models.entity.EstadoSolic;
 import com.deltasac.deltanet.models.entity.Solicitud;
 
 public interface ISolicitudDao extends JpaRepository<Solicitud, Long> {
 	
 	@Query("from Area")
 	public List<Area> findAllAreas();
+	
+	@Query("select e from EstadoSolic e where e.id=?1")
+	public EstadoSolic findEstado(Long id);
 	
 	public Page<Solicitud> findByidcrea(Integer id, Pageable pageable);
 	

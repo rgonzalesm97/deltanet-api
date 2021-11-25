@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.deltasac.deltanet.models.entity.Area;
+import com.deltasac.deltanet.models.entity.EstadoSolic;
 import com.deltasac.deltanet.models.entity.Solicitud;
 
 public interface ISolicitudService {
@@ -17,5 +18,6 @@ public interface ISolicitudService {
 	public Solicitud save(Solicitud solicitud);
 	public void delete(Long id);
 	public List<Area> findAllAreas();
+	public EstadoSolic cargaEstado(Long id);
 
 }

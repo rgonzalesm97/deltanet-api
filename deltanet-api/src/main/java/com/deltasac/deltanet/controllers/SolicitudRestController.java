@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.deltasac.deltanet.models.entity.Area;
+import com.deltasac.deltanet.models.entity.EstadoSolic;
 import com.deltasac.deltanet.models.entity.Solicitud;
 import com.deltasac.deltanet.models.service.ISolicitudService;
 import com.deltasac.deltanet.models.service.IUploadFileService;
@@ -130,7 +131,6 @@ public class SolicitudRestController {
 		try {
 			solicitudActual.setTitulo(solicitud.getTitulo());
 			solicitudActual.setDesTitulo(solicitud.getDesTitulo());
-			solicitudActual.setEstado(solicitud.getEstado());
 			solicitudActual.setArea(solicitud.getArea());
 			
 			solicitudUpdated = solicitudService.save(solicitudActual);
@@ -237,10 +237,17 @@ public class SolicitudRestController {
 		return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
 	}
 	
-	@Secured({"ROLE_ADMIN"})
+	@Secured({"ROLE_ADMIN","ROLE_USER"})
 	@GetMapping("/solicitudes/areas")
 	public List<Area> listarAreas(){
 		return solicitudService.findAllAreas();
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_USER"})
+	@GetMapping("/solicitudes/estados")
+	public EstadoSolic cargaEstado(@RequestParam("id") Long id) {
+		System.out.println("Ingresa **" + id);
+		return solicitudService.cargaEstado(id);
 	}
 
 }

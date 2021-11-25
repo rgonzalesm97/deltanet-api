@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.deltasac.deltanet.models.dao.ISolicitudDao;
 import com.deltasac.deltanet.models.entity.Area;
+import com.deltasac.deltanet.models.entity.EstadoSolic;
 import com.deltasac.deltanet.models.entity.Solicitud;
 
 @Service
@@ -56,6 +57,13 @@ public class SolicitudServiceImpl implements ISolicitudService {
 	@Transactional(readOnly=true)
 	public List<Area> findAllAreas() {
 		return solicitudDao.findAllAreas();
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public EstadoSolic cargaEstado(Long id) {
+		System.out.println("ingresa al servicio");
+		return solicitudDao.findEstado(id);
 	}
 
 	@Override
