@@ -72,4 +72,10 @@ public class SolicitudServiceImpl implements ISolicitudService {
 		return solicitudDao.findByidcrea(id);
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public Area findAreaId(Long id) {
+		return solicitudDao.findAreaId(id);
+	}
+
 }

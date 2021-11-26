@@ -16,6 +16,9 @@ public interface ISolicitudDao extends JpaRepository<Solicitud, Long> {
 	@Query("from Area")
 	public List<Area> findAllAreas();
 	
+	@Query("from Area where id=?1")
+	public Area findAreaId(Long id);
+	
 	@Query("select e from EstadoSolic e where e.id=?1")
 	public EstadoSolic findEstado(Long id);
 	

@@ -87,6 +87,7 @@ public class SolicitudRestController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> create(@Valid @RequestBody Solicitud solicitud, BindingResult result) {
 		Solicitud solicitudNew = null;
+		System.out.println(solicitud.toString());
 		Map<String, Object> response = new HashMap<>();
 		if(result.hasErrors()) {
 			List<String> errors = result.getFieldErrors()
@@ -244,9 +245,15 @@ public class SolicitudRestController {
 	}
 	
 	@Secured({"ROLE_ADMIN","ROLE_USER"})
+	@GetMapping("/solicitudes/conarea")
+	public Area consultaArea(@RequestParam("id") Long id) {
+		System.out.println("Codigo: " + id);
+		return solicitudService.findAreaId(id);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_USER"})
 	@GetMapping("/solicitudes/estados")
 	public EstadoSolic cargaEstado(@RequestParam("id") Long id) {
-		System.out.println("Ingresa **" + id);
 		return solicitudService.cargaEstado(id);
 	}
 

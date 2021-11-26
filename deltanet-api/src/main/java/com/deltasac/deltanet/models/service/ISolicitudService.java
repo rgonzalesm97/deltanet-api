@@ -18,6 +18,7 @@ public interface ISolicitudService {
 	public Solicitud save(Solicitud solicitud);
 	public void delete(Long id);
 	public List<Area> findAllAreas();
+	public Area findAreaId(Long id);
 	public EstadoSolic cargaEstado(Long id);
 
 }
