@@ -1,6 +1,7 @@
 package com.deltasac.deltanet.models.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -50,6 +51,11 @@ public class PersonaService implements IPersonaService, UserDetailsService {
 	@Transactional(readOnly = true)
 	public Persona findByUsername(String username) {
 		return personaDao.findByUsername(username);
+	}
+
+	@Override
+	public Optional<Persona> findById(Long id) {
+		return personaDao.findById(id);
 	}
 
 }
