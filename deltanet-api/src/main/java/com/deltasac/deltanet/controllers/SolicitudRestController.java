@@ -2,6 +2,7 @@ package com.deltasac.deltanet.controllers;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,13 +12,14 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.security.access.annotation.Secured;
@@ -37,6 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.deltasac.deltanet.models.entity.Area;
 import com.deltasac.deltanet.models.entity.EstadoSolic;
 import com.deltasac.deltanet.models.entity.Solicitud;
+import com.deltasac.deltanet.models.service.EmailSenderService;
 import com.deltasac.deltanet.models.service.ISolicitudService;
 import com.deltasac.deltanet.models.service.IUploadFileService;
 
@@ -50,6 +53,9 @@ public class SolicitudRestController {
 	
 	@Autowired
 	private IUploadFileService uploadService;
+	
+	@Autowired
+	private EmailSenderService senderService;
 	
 	@Secured({"ROLE_ADMIN","ROLE_USER"})
 	@GetMapping("/solicitudes")
@@ -165,15 +171,7 @@ public class SolicitudRestController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 		
 	}
-	/*
-	@Secured({"ROLE_ADMIN","ROLE_USER"})
-	@GetMapping("/solicitudes/page/{page}")
-	public Page<Solicitud> index(@PathVariable Integer page){
-		Sort sort = Sort.by(Sort.Direction.ASC,"estadoSolic.descrip");
-		Pageable pageable = PageRequest.of(page, 8, sort);
-		return solicitudService.findAll(pageable);
-	}*/
-	
+		
 	@Secured({"ROLE_ADMIN","ROLE_USER"})
 	@GetMapping("/solicitudes/page")
 	public Page<Solicitud> index(@RequestParam("page") Integer page,
@@ -222,20 +220,16 @@ public class SolicitudRestController {
 	}
 	
 	@Secured({"ROLE_ADMIN","ROLE_USER"})
-	@GetMapping("/uploads/img/{nombreFoto:.+}")
-	public ResponseEntity<Resource> verImagen(@PathVariable String nombreImagen){
-		Resource recurso = null;
+	@GetMapping("/uploads/img/{nombreImagen}")
+	public ResponseEntity<?> verImagen(@PathVariable String nombreImagen) throws MalformedURLException{
+		Path rutaArchivo = uploadService.getPath(nombreImagen);
+		Resource recurso = new UrlResource(rutaArchivo.toUri());
 		
-		try {
-			recurso = uploadService.cargar(nombreImagen);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		
-		HttpHeaders cabecera = new HttpHeaders();
-		cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"");
-		
-		return new ResponseEntity<Resource>(recurso, cabecera, HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .contentLength(rutaArchivo.toFile().length())
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(recurso);
 	}
 	
 	@Secured({"ROLE_ADMIN","ROLE_USER"})
@@ -255,6 +249,21 @@ public class SolicitudRestController {
 	@GetMapping("/solicitudes/estados")
 	public EstadoSolic cargaEstado(@RequestParam("id") Long id) {
 		return solicitudService.cargaEstado(id);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_USER"})
+	@GetMapping("/solicitudes/email")
+	public ResponseEntity<?> envioCorreo(@RequestParam("subject") String subject,
+			                @RequestParam("cuenta") String cuenta,
+			                @RequestParam("mensaje") String mensaje) {
+		
+		System.out.println("formteo de fecha ok");
+		Map<String, Object> response = new HashMap<>();
+				
+		senderService.sendEmail(cuenta, subject, mensaje);
+		
+		response.put("mensaje", "Se envio correo satisfctoriamente");
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 
 }

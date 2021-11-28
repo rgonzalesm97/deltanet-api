@@ -22,7 +22,7 @@ public class ResourceSeverConfig extends ResourceServerConfigurerAdapter {
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers(HttpMethod.GET,"/apiSolic/uploads/img/**","/images/**","apiSolic/solicitudes/**").permitAll()
+		http.authorizeRequests().antMatchers(HttpMethod.GET,"/apiSolic/uploads/img","/apiSolic/uploads/img/**","/images/**","apiSolic/solicitudes/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
 		.cors().configurationSource(corsConfigurationSource());
