@@ -192,6 +192,12 @@ public class SolicitudRestController {
 	}
 	
 	@Secured({"ROLE_ADMIN","ROLE_USER"})
+	@GetMapping("/solicitudes/userarea")
+	public List<Solicitud> listSolArea(@RequestParam("id") Long id){
+		return solicitudService.findAllAreaIdUser(id);
+	}
+	
+	@Secured({"ROLE_ADMIN","ROLE_USER"})
 	@PostMapping("/solicitudes/upload")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo,
 			                        @RequestParam("id") Long id){

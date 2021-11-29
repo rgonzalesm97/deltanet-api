@@ -40,7 +40,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory().withClient("deltanetapp").secret(passwordEncoder.encode("D3lt@372")).scopes("read", "write")
 				.authorizedGrantTypes("password", "refresh_token").accessTokenValiditySeconds(7200)
-				.refreshTokenValiditySeconds(3600);
+				.refreshTokenValiditySeconds(600);
 	}
 
 	@Override

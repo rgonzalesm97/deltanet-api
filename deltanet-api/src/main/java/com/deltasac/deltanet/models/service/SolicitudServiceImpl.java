@@ -78,4 +78,10 @@ public class SolicitudServiceImpl implements ISolicitudService {
 		return solicitudDao.findAreaId(id);
 	}
 
+	@Override
+	public List<Solicitud> findAllAreaIdUser(Long id) {
+		return solicitudDao.findByAreaIdUser(id);
+	}
+
+	
 }
