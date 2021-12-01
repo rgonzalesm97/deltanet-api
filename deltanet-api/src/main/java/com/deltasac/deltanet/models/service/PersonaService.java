@@ -57,5 +57,16 @@ public class PersonaService implements IPersonaService, UserDetailsService {
 	public Optional<Persona> findById(Long id) {
 		return personaDao.findById(id);
 	}
+	
+	@Override
+	public List<Persona> findAll() {
+		return personaDao.findAll();
+	}
+	
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		personaDao.deleteById(id);		
+	}
 
 }
