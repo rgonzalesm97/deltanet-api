@@ -36,6 +36,13 @@ public class Role implements Serializable {
 		this.nombre = nombre;
 	}
 
+	@Override
+	public String toString() {
+		return "Role [id=" + id + ", nombre=" + nombre + "]";
+	}
+
+
+
 	private static final long serialVersionUID = 1L;
 
 }

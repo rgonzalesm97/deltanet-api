@@ -36,7 +36,7 @@ public class Persona implements Serializable {
 	@Column(unique = true)
 	private String email;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinTable(name = "users_authorities", joinColumns = @JoinColumn(name = "persona_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
 			@UniqueConstraint(columnNames = { "persona_id", "role_id" }) })
 	private List<Role> roles;
@@ -111,6 +111,13 @@ public class Persona implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Override
+	public String toString() {
+		return "Persona [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled
+				+ ", nrodoc=" + nrodoc + ", nomper=" + nomper + ", apeper=" + apeper + ", email=" + email + ", roles="
+				+ roles + "]";
 	}
 
 	private static final long serialVersionUID = 1L;

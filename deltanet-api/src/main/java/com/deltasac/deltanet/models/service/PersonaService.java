@@ -17,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.deltasac.deltanet.models.dao.IPersonaDao;
+import com.deltasac.deltanet.models.entity.Area;
 import com.deltasac.deltanet.models.entity.Persona;
+import com.deltasac.deltanet.models.entity.Role;
+import com.deltasac.deltanet.models.entity.Solicitud;
 
 @Service
 public class PersonaService implements IPersonaService, UserDetailsService {
@@ -61,6 +64,18 @@ public class PersonaService implements IPersonaService, UserDetailsService {
 	@Override
 	public List<Persona> findAll() {
 		return personaDao.findAll();
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public List<Role> findAllRoles() {
+		return personaDao.findAllRoles();
+	}
+	
+	@Override
+	@Transactional
+	public Persona save(Persona persona) {
+		return personaDao.save(persona);
 	}
 	
 	@Override
