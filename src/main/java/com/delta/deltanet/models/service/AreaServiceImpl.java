@@ -21,7 +21,7 @@ public class AreaServiceImpl implements IAreaService {
 
 	@Override
 	public Area findById(Long id) {
-		return areaDao.findById(id).get();
+		return areaDao.findById(id).orElse(null);
 	}
 
 	@Override

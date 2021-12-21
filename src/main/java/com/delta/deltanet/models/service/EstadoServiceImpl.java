@@ -21,7 +21,7 @@ public class EstadoServiceImpl implements IEstadoService {
 
 	@Override
 	public Estado findById(Long id) {
-		return estadoDao.findById(id).get();
+		return estadoDao.findById(id).orElse(null);
 	}
 
 	@Override

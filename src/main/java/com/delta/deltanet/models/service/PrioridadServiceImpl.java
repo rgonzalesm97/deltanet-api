@@ -21,7 +21,7 @@ public class PrioridadServiceImpl implements IPrioridadService {
 
 	@Override
 	public Prioridad findById(Long id) {
-		return prioridadDao.findById(id).get();
+		return prioridadDao.findById(id).orElse(null);
 	}
 
 	@Override

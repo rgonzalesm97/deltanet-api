@@ -21,7 +21,7 @@ public class CatalogoServicioServiceImpl implements ICatalogoServicioService {
 
 	@Override
 	public CatalogoServicio findById(Long id) {
-		return catalogoServicioDao.findById(id).get();
+		return catalogoServicioDao.findById(id).orElse(null);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class TipoAccionServiceImpl implements ITipoAccionService {
 
 	@Override
 	public TipoAccion findById(Long id) {
-		return tipoAccionDao.findById(id).get();
+		return tipoAccionDao.findById(id).orElse(null);
 	}
 
 	@Override

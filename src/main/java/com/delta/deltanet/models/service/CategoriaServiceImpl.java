@@ -21,7 +21,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
 	@Override
 	public Categoria findById(Long id) {
-		return categoriaDao.findById(id).get();
+		return categoriaDao.findById(id).orElse(null);
 	}
 
 	@Override
