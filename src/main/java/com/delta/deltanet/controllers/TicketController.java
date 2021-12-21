@@ -4,20 +4,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -38,8 +35,6 @@ public class TicketController {
 	@PostMapping("/prioridad/create")
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> CreatePrioridad(@RequestParam("nombrePrioridad") String nombrePrioridad, @RequestParam("usuario") String usuarioCreacion){
-		Prioridad prioridadNew = null;
-		
 		Prioridad prioridad = new Prioridad();
 		prioridad.setNombre(nombrePrioridad);
 		prioridad.setUsuCreado(usuarioCreacion);
@@ -48,7 +43,8 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		
 		try {
-			prioridadNew = prioridadService.save(prioridad);
+			
+			prioridadService.save(prioridad);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realzar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -92,7 +88,6 @@ public class TicketController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> UpdatePrioridad(@PathVariable Long id, @RequestParam("nombrePrioridad") String nombrePrioridad, @RequestParam("usuario") String usuarioActualizacion) {
 		Prioridad prioridadActual = prioridadService.findById(id);
-		Prioridad prioridadUpdated = null;
 		Map<String,Object> response = new HashMap<>();
 		
 		if(prioridadActual==null) {
@@ -105,7 +100,7 @@ public class TicketController {
 			prioridadActual.setFechaEditado(new Date());
 			prioridadActual.setUsuEditado(usuarioActualizacion);
 			
-			prioridadUpdated = prioridadService.save(prioridadActual);
+			prioridadService.save(prioridadActual);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al actualizar la prioridad en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
