@@ -1,5 +1,7 @@
 package com.delta.deltanet.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,12 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.delta.deltanet.models.entity.Archivo;
 import com.delta.deltanet.models.entity.Area;
 import com.delta.deltanet.models.entity.Categoria;
 import com.delta.deltanet.models.entity.Estado;
 import com.delta.deltanet.models.entity.Prioridad;
 import com.delta.deltanet.models.entity.TipoAccion;
+import com.delta.deltanet.models.service.IArchivoService;
 import com.delta.deltanet.models.service.IAreaService;
 import com.delta.deltanet.models.service.ICategoriaService;
 import com.delta.deltanet.models.service.IEstadoService;
@@ -45,6 +50,8 @@ public class TicketController {
 	private IEstadoService estadoService;
 	@Autowired
 	private ITipoAccionService tipoAccionService;
+	@Autowired
+	private IArchivoService archivoService;
 	
 	
 	
@@ -606,5 +613,60 @@ public class TicketController {
 		}
 		response.put("mensaje", "el tipo acción ha sido eliminado con éxito!");
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+	}
+	
+	@PostMapping("/archivo/CreateArchivo")
+	public ResponseEntity<?> uploadFiles(@RequestParam("files") MultipartFile[] files,
+			                             @RequestParam("IdTabla") Long idTabla,
+			                             @RequestParam("Tabla") String Tabla,
+			                             @RequestParam("Usuario") String Usuario
+			                            ) {
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			List<String> fileNames = new ArrayList<>();
+
+			Arrays.asList(files).stream().forEach(file -> {
+				archivoService.registrar(file, Tabla, idTabla);
+				fileNames.add(file.getOriginalFilename());
+			});
+			response.put("mensaje", "Archivos subidos correctamente: " + fileNames);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje", "Falla al subir archivos...");
+			response.put("error", e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/archivo/ReadAllArchivo")
+	public ResponseEntity<?> readFiles(@RequestParam("IdTabla") Long idTabla,
+                                         @RequestParam("Tabla") String Tabla
+                                        ){
+		
+		Map<String, Object> response = new HashMap<>();
+		try {
+			List<Archivo> archivos = archivoService.findByTablaAndTablaId(Tabla, idTabla);
+			response.put("archivos", archivos);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje", "No se obtuvo listado de archivos");
+			response.put("error", e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		}
+	}
+	
+	@DeleteMapping("/archivo/DeleteArchivo/{id}")
+	public ResponseEntity<?> deleteFile(@PathVariable Long id){
+		Map<String, Object> response = new HashMap<>();
+		try {
+			archivoService.delete(id);
+			response.put("mensaje","Archivo eliminado satisfactoriamente.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","No se elimino el archivo.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
 	}
 }
