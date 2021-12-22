@@ -2,6 +2,7 @@ package com.delta.deltanet.models.service;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,16 @@ public class HistorialServiceImpl implements IHistorialService {
 	}
 
 	@Override
+	public List<Historial> findAllByTabla(String tabla) {
+		return historialDao.findByTabla(tabla);
+	}
+	
+	@Override
+	public List<Historial> findAllByItem(String tabla, Long idTabla) {
+		return historialDao.findByItem(tabla, idTabla);
+	}
+	
+	@Override
 	public Historial findById(Long id) {
 		return historialDao.findById(id).get();
 	}
@@ -30,8 +41,9 @@ public class HistorialServiceImpl implements IHistorialService {
 	}
 
 	@Override
-	public void delte(Long id) {
+	public void delete(Long id) {
 		historialDao.deleteById(id);
 	}
+
 	
 }

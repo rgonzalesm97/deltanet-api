@@ -9,6 +9,6 @@ public interface IArchivoService {
 	public List<Archivo> findAll();
 	public Archivo findById(Long id);
 	public Archivo save(Archivo archivo);
-	public void delte(Long id);
+	public void delete(Long id);
 	
 }

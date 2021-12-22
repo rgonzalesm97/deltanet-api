@@ -30,7 +30,7 @@ public class TipoAccionServiceImpl implements ITipoAccionService {
 	}
 
 	@Override
-	public void delte(Long id) {
+	public void delete(Long id) {
 		tipoAccionDao.deleteById(id);
 	}
 	

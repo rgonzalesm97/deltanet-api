@@ -9,6 +9,6 @@ public interface IEstadoService {
 	public List<Estado> findAll();
 	public Estado findById(Long id);
 	public Estado save(Estado estado);
-	public void delte(Long id);
+	public void delete(Long id);
 	
 }

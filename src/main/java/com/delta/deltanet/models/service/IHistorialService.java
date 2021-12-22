@@ -8,7 +8,9 @@ public interface IHistorialService {
 	
 	public List<Historial> findAll();
 	public Historial findById(Long id);
+	public List<Historial> findAllByTabla(String tabla);
+	public List<Historial> findAllByItem(String tabla, Long idTabla);
 	public Historial save(Historial historial);
-	public void delte(Long id);
+	public void delete(Long id);
 	
 }

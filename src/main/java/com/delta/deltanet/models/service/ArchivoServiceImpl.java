@@ -30,7 +30,7 @@ public class ArchivoServiceImpl implements IArchivoService {
 	}
 
 	@Override
-	public void delte(Long id) {
+	public void delete(Long id) {
 		archivoDao.deleteById(id);
 	}
 	

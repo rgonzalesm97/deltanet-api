@@ -30,7 +30,7 @@ public class TicketServiceImpl implements ITicketService {
 	}
 
 	@Override
-	public void delte(Long id) {
+	public void delete(Long id) {
 		ticketDao.deleteById(id);
 	}
 	
