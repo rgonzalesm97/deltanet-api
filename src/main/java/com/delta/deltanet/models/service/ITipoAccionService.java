@@ -9,6 +9,6 @@ public interface ITipoAccionService {
 	public List<TipoAccion> findAll();
 	public TipoAccion findById(Long id);
 	public TipoAccion save(TipoAccion tipoAccion);
-	public void delte(Long id);
+	public void delete(Long id);
 	
 }

@@ -30,7 +30,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
 	}
 
 	@Override
-	public void delte(Long id) {
+	public void delete(Long id) {
 		categoriaDao.deleteById(id);
 	}
 	
