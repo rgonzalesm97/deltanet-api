@@ -33,5 +33,15 @@ public class UsuarioServicioServiceImpl implements IUsuarioServicioService {
 	public void delete(Long id) {
 		usuarioServicioDao.deleteById(id);
 	}
+
+	@Override
+	public UsuarioServicio findByIdAndEstado(Long id, String estado) {
+		return usuarioServicioDao.findByIdAndEstadoRegistro(id, estado);
+	}
+
+	@Override
+	public List<UsuarioServicio> listado() {
+		return usuarioServicioDao.findByEstadoRegistro("A");
+	}
 	
 }

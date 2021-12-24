@@ -12,6 +12,7 @@ public interface IFilesStorageService {
 	public String save(MultipartFile file);
 	public Resource load(String filename);
 	public void deleteAll();
+	public void deleteArchivo(String filename);
 	public Stream<Path> loadAll();
 
 }
