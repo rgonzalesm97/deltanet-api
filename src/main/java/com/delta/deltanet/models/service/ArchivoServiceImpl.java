@@ -34,6 +34,9 @@ public class ArchivoServiceImpl implements IArchivoService {
 
 	@Override
 	public void delete(Long id) {
+		Archivo file = archivoDao.getById(id);
+		String nomFile = file.getNombre();
+		fileStorageService.deleteArchivo(nomFile);
 		archivoDao.deleteById(id);
 	}
 

@@ -25,16 +25,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.delta.deltanet.models.entity.Archivo;
 import com.delta.deltanet.models.entity.Area;
+import com.delta.deltanet.models.entity.CatalogoServicio;
 import com.delta.deltanet.models.entity.Categoria;
 import com.delta.deltanet.models.entity.Estado;
 import com.delta.deltanet.models.entity.Prioridad;
 import com.delta.deltanet.models.entity.TipoAccion;
+import com.delta.deltanet.models.entity.UsuarioServicio;
 import com.delta.deltanet.models.service.IArchivoService;
 import com.delta.deltanet.models.service.IAreaService;
+import com.delta.deltanet.models.service.ICatalogoServicioService;
 import com.delta.deltanet.models.service.ICategoriaService;
 import com.delta.deltanet.models.service.IEstadoService;
 import com.delta.deltanet.models.service.IPrioridadService;
 import com.delta.deltanet.models.service.ITipoAccionService;
+import com.delta.deltanet.models.service.IUsuarioServicioService;
 
 @RestController
 @RequestMapping("/ticket")
@@ -52,6 +56,10 @@ public class TicketController {
 	private ITipoAccionService tipoAccionService;
 	@Autowired
 	private IArchivoService archivoService;
+	@Autowired
+	private ICatalogoServicioService catalogoServicioService;
+	@Autowired
+	private IUsuarioServicioService usuarioServicioService;
 	
 	
 	
@@ -618,10 +626,14 @@ public class TicketController {
 	@PostMapping("/archivo/CreateArchivo")
 	public ResponseEntity<?> uploadFiles(@RequestParam("files") MultipartFile[] files,
 			                             @RequestParam("IdTabla") Long idTabla,
-			                             @RequestParam("Tabla") String Tabla,
-			                             @RequestParam("Usuario") String Usuario
+			                             @RequestParam("Tabla") String Tabla
 			                            ) {
 		Map<String, Object> response = new HashMap<>();
+		List<Archivo> lstFiles = archivoService.findByTablaAndTablaId(Tabla, idTabla);
+		if(lstFiles.size() > 0 ) {
+			response.put("mensaje", "Ya existen archivos para la tabla: " + Tabla + ", TablaId: " + idTabla);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CONFLICT);
+		}
 		
 		try {
 			List<String> fileNames = new ArrayList<>();
@@ -647,6 +659,10 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			List<Archivo> archivos = archivoService.findByTablaAndTablaId(Tabla, idTabla);
+			if (archivos==null) {
+				response.put("mensaje", "No se encontraron archivos.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
 			response.put("archivos", archivos);
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 		} catch (Exception e) {
@@ -668,5 +684,301 @@ public class TicketController {
 			response.put("error",e.getMessage());
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
+	}
+	
+	@PostMapping("/catalogo/CreateCatalogoServicio")
+	public ResponseEntity<?> creaCatalogo(@RequestParam("nombreCat") String nomCatalogo,
+			                              @RequestParam("idArea") Long idArea,
+			                              @RequestParam("usuario") String usuario
+			                             ){
+		Map<String, Object> response = new HashMap<>();
+		Area area = null;
+		try {
+			area = areaService.findById(idArea);
+			if (area == null) {
+				response.put("mensaje","Area no encontrada.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			response.put("mensaje","Error al buscar area.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		try {
+			CatalogoServicio catalogo = new CatalogoServicio();
+			catalogo.setNombre(nomCatalogo);
+			catalogo.setArea(area);
+			catalogo.setUsuCreado(usuario);
+			catalogoServicioService.save(catalogo);
+			response.put("mensaje","El catalogo se creo satisfactoriamente.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al crear catalogo.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+	}
+	
+	@GetMapping("/catalogo/ReadCatalogoServicio/{id}")
+	public ResponseEntity<?> leeCatalogo(@PathVariable Long id) {
+		Map<String, Object> response = new HashMap<>();
+		CatalogoServicio catalogo = null;
+		try {
+			catalogo = catalogoServicioService.findByIdAndEstado(id, "A");
+			if (catalogo == null) {
+				response.put("mensaje","No se encontraron catalogos.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+			response.put("mensaje","El catalogo se obtuvo satisfactoriamente.");
+			response.put("catalogo", catalogo);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al leer catalogo.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
+	@GetMapping("/catalogo/ReadAllCatalogoServicio/{idArea}")
+	public ResponseEntity<?> listCatalogo(@PathVariable Long idArea) {
+		Map<String, Object> response = new HashMap<>();
+		List<CatalogoServicio> catalogos = null;
+		Area area = null;
+		try {
+			area=areaService.findById(idArea);
+			if(area == null) {
+				response.put("mensaje","No se encontro el area.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			response.put("mensaje","Error al ubicar el area.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		try {
+			catalogos = catalogoServicioService.findByAreaAndEstado(area, "A");
+			if (catalogos == null) {
+				response.put("mensaje","No se encontraron catalogos para el area requerida.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+			response.put("mensaje","Se obtuvo el listado de catalogos.");
+			response.put("catalogos", catalogos);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al obtener catalogos.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/catalogo/UpdateCatalogoServicio")
+	public ResponseEntity<?> updateCatalogo(@RequestParam("idCatalogo") Long id,
+			                                @RequestParam("nombreCat") String nombreCat,
+			                                @RequestParam("idArea") Long idArea,
+			                                @RequestParam("usuario") String usuario
+			                               ){
+		Map<String, Object> response = new HashMap<>();
+		CatalogoServicio catalogo = null;
+		Area area = null;
+		try {
+			area = areaService.findById(idArea);
+			if(area==null) {
+				response.put("mensaje","No se encuentra el area.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			response.put("mensaje","Error al buscar el area.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		try {
+			catalogo = catalogoServicioService.findById(id);
+			if(catalogo==null) {
+				response.put("mensaje","No se encontro el catalogo.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			response.put("mensaje","Error al no encontrar el catalogo.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		try {
+			catalogo.setNombre(nombreCat);
+			catalogo.setArea(area);
+			catalogo.setUsuEditado(usuario);
+			catalogo.setFechaEditado(new Date());
+			catalogoServicioService.save(catalogo);
+			response.put("mensaje","Se actualizo el catalogo.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al actualizar catalogo.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/catalogo/DeleteCatalogoServicio")
+	public ResponseEntity<?> deleteCatalogo(@RequestParam("idCatalogo") Long id,
+			                                @RequestParam("usuario") String usuario
+			                               ){
+		Map<String, Object> response = new HashMap<>();
+		CatalogoServicio catalogo = null;
+		try {
+			catalogo = catalogoServicioService.findById(id);
+			if(catalogo==null) {
+				response.put("mensaje","No se encontro el catalogo.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			response.put("mensaje","Error al buscar catalogo.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		try {
+			catalogo.setEstadoRegistro('B');
+			catalogo.setUsuEditado(usuario);
+			catalogo.setFechaEditado(new Date());
+			catalogoServicioService.save(catalogo);
+			response.put("mensaje","Se elimino el catalogo.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al eliminar catalogo.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/usuario/CreateUsuarioServicio")
+	public ResponseEntity<?> creaUsuario(@RequestParam("usuario") String usuario,
+			                             @RequestParam("nombre") String nombre,
+			                             @RequestParam("apellido") String apellido,
+			                             @RequestParam("rol") char rol,
+			                             @RequestParam("userCrea") String userCrea
+			                            ){
+		Map<String, Object> response = new HashMap<>();
+		UsuarioServicio user = new UsuarioServicio();
+		try {
+			user.setUsuario(usuario);
+			user.setNombre(nombre);
+			user.setApellidos(apellido);
+			user.setRol(rol);
+			user.setUsuCreado(userCrea);
+			usuarioServicioService.save(user);
+			response.put("mensaje","Se creo el usuario satisfactoriamente.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al crear usuario.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
+	}
+	
+	@GetMapping("/usuario/ReadUsuarioServicio/{id}")
+	public ResponseEntity<?> leeUsuario(@PathVariable Long id){
+		Map<String, Object> response = new HashMap<>();
+		UsuarioServicio usuario = null;
+		try {
+			usuario = usuarioServicioService.findByIdAndEstado(id, "A");
+			if (usuario == null) {
+				response.put("mensaje","No se encontro el usuario.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+			response.put("mensaje","Se creo el usuario satisfactoriamente.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al buscar usuario.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/usuario/ReadAllUsuarioServicio")
+	public ResponseEntity<?> listaUsuarios(){
+		Map<String, Object> response = new HashMap<>();
+		List<UsuarioServicio> usuarios = null;
+		try {
+			usuarios = usuarioServicioService.listado();
+			if (usuarios == null) {
+				response.put("mensaje","No se encontraron usuarios.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+			response.put("usuarios",usuarios);
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al listar usuarios.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PutMapping("/usuario/UpdateUsuarioServicio")
+	public ResponseEntity<?> actUsuario(@RequestParam("idUsuario") Long idUser,
+			                             @RequestParam("nombre") String nombre,
+			                             @RequestParam("apellido") String apellido,
+			                             @RequestParam("rol") char rol,
+			                             @RequestParam("userActu") String userActu
+			                            ){
+		Map<String, Object> response = new HashMap<>();
+		UsuarioServicio user = null;
+		try {
+			user=usuarioServicioService.findByIdAndEstado(idUser, "A");
+			if (user==null) {
+				response.put("mensaje","Usuario no encontrado.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			response.put("mensaje","Error al buscar usuario.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		try {
+			user.setNombre(nombre);
+			user.setApellidos(apellido);
+			user.setRol(rol);
+			user.setUsuEditado(userActu);
+			user.setFechaEditado(new Date());
+			usuarioServicioService.save(user);
+			response.put("mensaje","Se actualizo el usuario satisfactoriamente.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al actualizar usuario.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
+	}
+	
+	@PutMapping("/usuario/DeleteUsuarioServicio")
+	public ResponseEntity<?> delUsuario(@RequestParam("idUsuario") Long idUser,
+			                             @RequestParam("userActu") String userActu
+			                            ){
+		Map<String, Object> response = new HashMap<>();
+		UsuarioServicio user = null;
+		try {
+			user=usuarioServicioService.findByIdAndEstado(idUser, "A");
+			if (user==null) {
+				response.put("mensaje","Usuario no encontrado.");
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			response.put("mensaje","Error al buscar usuario.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		try {
+			user.setEstadoRegistro('B');
+			user.setUsuEditado(userActu);
+			user.setFechaEditado(new Date());
+			usuarioServicioService.save(user);
+			response.put("mensaje","Se elimino el usuario satisfactoriamente.");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("mensaje","Error al eliminar usuario.");
+			response.put("error",e.getMessage());
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
 	}
 }

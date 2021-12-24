@@ -63,8 +63,8 @@ public class UsuarioServicio implements Serializable{
 	
 	@PrePersist
 	public void prePersist() {
-		//fechaCreado = new Date();
-		rol = 2;
+		fechaCreado = new Date();
+		//rol = 2;
 		estadoRegistro = 'A';
 	}
 	

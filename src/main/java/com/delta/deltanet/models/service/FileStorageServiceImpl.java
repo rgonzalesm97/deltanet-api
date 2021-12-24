@@ -1,5 +1,6 @@
 package com.delta.deltanet.models.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -74,6 +75,18 @@ public class FileStorageServiceImpl implements IFilesStorageService {
 		} catch (IOException e) {
 			throw new RuntimeException("No se pueden cargar los archivos!!");
 		}
+	}
+
+	@Override
+	public void deleteArchivo(String filename) {
+		if(filename != null && filename.length() > 0) {
+			Path rutaArchivo = Paths.get(DIRECTORIO_UPLOAD).resolve(filename).toAbsolutePath();
+			File ArchivoDelete = rutaArchivo.toFile();
+			if(ArchivoDelete.exists() && ArchivoDelete.canRead()) {
+				ArchivoDelete.delete();
+			}
+		}
+		
 	}
 
 }

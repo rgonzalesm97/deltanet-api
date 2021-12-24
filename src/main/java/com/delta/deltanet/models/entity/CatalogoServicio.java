@@ -67,7 +67,7 @@ public class CatalogoServicio implements Serializable{
 	
 	@PrePersist
 	public void prePersist() {
-		//fechaCreado = new Date();
+		fechaCreado = new Date();
 		estadoRegistro = 'A';
 	}
 	
