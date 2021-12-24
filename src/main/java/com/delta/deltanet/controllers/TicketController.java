@@ -6,14 +6,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.transaction.Transactional;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,25 +27,28 @@ import org.springframework.web.multipart.MultipartFile;
 import com.delta.deltanet.models.entity.Archivo;
 import com.delta.deltanet.models.entity.Area;
 import com.delta.deltanet.models.entity.Categoria;
+import com.delta.deltanet.models.entity.Comentario;
 import com.delta.deltanet.models.entity.Estado;
 import com.delta.deltanet.models.entity.Historial;
 import com.delta.deltanet.models.entity.Prioridad;
+import com.delta.deltanet.models.entity.Ticket;
 import com.delta.deltanet.models.entity.TipoAccion;
 import com.delta.deltanet.models.service.IArchivoService;
 import com.delta.deltanet.models.service.IAreaService;
 import com.delta.deltanet.models.service.ICategoriaService;
+import com.delta.deltanet.models.service.IComentarioService;
 import com.delta.deltanet.models.service.IEstadoService;
 import com.delta.deltanet.models.service.IHistorialService;
 import com.delta.deltanet.models.service.IPrioridadService;
+import com.delta.deltanet.models.service.ITicketService;
 import com.delta.deltanet.models.service.ITipoAccionService;
 
 @RestController
 @RequestMapping("/ticket")
 public class TicketController {
-	
-	@Autowired
-	private Environment env;
 
+	@Autowired
+	private ITicketService ticketService;
 	@Autowired
 	private IPrioridadService prioridadService;
 	@Autowired
@@ -61,9 +61,10 @@ public class TicketController {
 	private ITipoAccionService tipoAccionService;
 	@Autowired
 	private IArchivoService archivoService;
-  @Autowired
+	@Autowired
 	private IHistorialService historialService;
-
+	@Autowired
+	private IComentarioService comentarioService;
   
 	//VariableEntorno
 	@Value("#{${tablas}}")
@@ -103,13 +104,13 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				prioridadService.delete(prioridadCreada.getId());
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			} 
 			
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al realzar el insert en la base de datos");
+			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -194,7 +195,7 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				prioridadService.save(prioridadBack);
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -249,7 +250,7 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				prioridadService.save(prioridadBack);
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -293,12 +294,12 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				areaService.delete(areaCreada.getId());
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			} 
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al realzar el insert en la base de datos");
+			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -382,7 +383,7 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				areaService.save(areaBack);
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -437,7 +438,7 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				areaService.save(areaBack);
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -480,12 +481,12 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				categoriaService.delete(categoriaCreada.getId());
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			} 
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al realzar el insert en la base de datos");
+			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -569,7 +570,7 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				categoriaService.save(categoriaBack);
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -624,7 +625,7 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				categoriaService.save(categoriaBack);
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -668,12 +669,12 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				estadoService.delete(estadoCreada.getId());
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			} 
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al realzar el insert en la base de datos");
+			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -757,7 +758,7 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				estadoService.save(estadoBack);
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -812,7 +813,7 @@ public class TicketController {
 			} catch (DataAccessException e) {
 				estadoService.save(estadoBack);
 				
-				response.put("mensaje", "Error al realzar el insert en la base de datos");
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
 				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 			}
@@ -840,7 +841,7 @@ public class TicketController {
 			
 			tipoAccionService.save(tipoAccion);
 		} catch (DataAccessException e) {
-			response.put("mensaje", "Error al realzar el insert en la base de datos");
+			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -1006,6 +1007,194 @@ public class TicketController {
 		List<Historial> historial = historialService.findAllByItem(tabla, idTabla);
 		
 		return new ResponseEntity<List<Historial>>(historial,HttpStatus.OK);
+	}
+	
+	//COMENTARIOS--------------------FALTA TESTEAR-----FALTA TICKETS
+	@PostMapping("/comentario/create")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<?> CreateComentario(@RequestParam("descripcion") String descripcion,
+											@RequestParam("visibilidad") char visibilidad,
+											@RequestParam("idTicket") Long idTicket,
+											@RequestParam("usuario") String usuarioCreacion){
+		Map<String, Object> response = new HashMap<>();
+		
+		Ticket ticket = ticketService.findById(idTicket);
+		if(ticket==null) {
+			response.put("mensaje", "El ticket ID: ".concat(idTicket.toString()
+					.concat(" no existe en la base de datos")));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+		}
+		
+		Comentario comentario = new Comentario();
+		comentario.setTicket(ticket);
+		comentario.setUsuario(usuarioCreacion);
+		comentario.setDescripcion(descripcion);
+		comentario.setVisibilidad(visibilidad);
+		comentario.setUsuCreado(usuarioCreacion);
+		comentario.setFechaCreado(new Date());
+		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("CREARID"))));
+		historial.setTabla(tablas.get("COMENTARIO"));
+		historial.setAccion(acciones.get("CREAR"));
+		historial.setUsuCreado(usuarioCreacion);
+		historial.setFechaCreado(new Date());
+		
+		Comentario comentarioCreado = new Comentario();
+		
+		
+		try {
+			
+			comentarioCreado = comentarioService.save(comentario);
+			
+			try {
+				
+				historial.setTablaId(comentarioCreado.getId());
+				historialService.save(historial);
+			} catch (DataAccessException e) {
+				comentarioService.delete(comentarioCreado.getId());
+				
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			} 
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar el insert en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "El comentario ha sido creado con éxito!");
+		
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/comentario/read/{id}")
+	public ResponseEntity<?> ReadComentario(@PathVariable Long id) {
+		Comentario comentario= null;
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			comentario = comentarioService.findById(id);
+			
+			if(comentario==null) {
+				response.put("mensaje", "El comentario ID: ".concat(id.toString()
+						.concat(" no existe en la base de datos")));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+			}
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar la consulta a la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return new ResponseEntity<Comentario>(comentario,HttpStatus.OK);
+	}
+	
+	@GetMapping("/comentario/read")
+	public ResponseEntity<?> ReadAllComentario(@RequestParam("idTicket") Optional<Long> idTicket) {
+		if(idTicket.isPresent()) {
+			List<Comentario> comentarios = comentarioService.findAllByTicket(idTicket.get());
+			
+			return new ResponseEntity<List<Comentario>>(comentarios,HttpStatus.OK);
+		}
+		
+		List<Comentario> comentarios = comentarioService.findAll();
+		
+		return new ResponseEntity<List<Comentario>>(comentarios,HttpStatus.OK);
+	}
+	
+	@PutMapping("/comentario/update/{id}")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<?> UpdateComentario(@PathVariable Long id, 
+												@RequestParam("descripcion") String descripcion, 
+												@RequestParam("visibilidad") char visibilidad,
+												@RequestParam("usuario") String usuarioActualizacion) {
+		Comentario comentarioActual = comentarioService.findById(id);
+		Map<String,Object> response = new HashMap<>();
+		
+		if(comentarioActual==null) {
+			response.put("mensaje", "Error: no se puede editar, el comentario ID: "
+					.concat(id.toString().concat(" no existe en la base de datos")));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+		}
+		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("EDITARID"))));
+		historial.setTabla(tablas.get("COMENTARIO"));
+		historial.setTablaId(id);
+		historial.setAccion(acciones.get("EDITAR"));
+		historial.setUsuCreado(usuarioActualizacion);
+		historial.setFechaCreado(new Date());
+		
+		Comentario comentarioBack = new Comentario();
+		comentarioBack.setId(comentarioActual.getId());
+		comentarioBack.setTicket(comentarioActual.getTicket());
+		comentarioBack.setDescripcion(comentarioActual.getDescripcion());
+		comentarioBack.setVisibilidad(comentarioActual.getVisibilidad());
+		comentarioBack.setUsuCreado(comentarioActual.getUsuCreado());
+		comentarioBack.setFechaCreado(comentarioActual.getFechaCreado());
+		comentarioBack.setUsuEditado(comentarioActual.getUsuEditado());
+		comentarioBack.setFechaEditado(comentarioActual.getFechaEditado());
+		
+		try {
+			comentarioActual.setDescripcion(descripcion);
+			comentarioActual.setVisibilidad(visibilidad);
+			comentarioActual.setFechaEditado(new Date());
+			comentarioActual.setUsuEditado(usuarioActualizacion);
+			
+			comentarioService.save(comentarioActual);
+			
+			try {
+				historialService.save(historial);
+			} catch (DataAccessException e) {
+				comentarioService.save(comentarioBack);
+				
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al actualizar el comentario en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "El comentario ha sido actualizado con éxito!");
+		
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/comentario/delete/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public ResponseEntity<?> DeleteComentario(@PathVariable Long id, @RequestParam("usuario") String usuarioActualizacion) {
+		Map<String, Object> response = new HashMap<>();
+		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("ELIMINARID"))));
+		historial.setTabla(tablas.get("COMENTARIO"));
+		historial.setTablaId(id);
+		historial.setAccion(acciones.get("ELIMINAR"));
+		historial.setUsuCreado(usuarioActualizacion);
+		historial.setFechaCreado(new Date());
+	
+		try {
+			historialService.save(historial);
+			
+			try {
+				comentarioService.delete(id);
+			} catch (DataAccessException e) {
+				historialService.delete(historial.getId());
+				
+				response.put("mensaje", "Error al realizar el delete en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al eliminar el comentario en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "el comentario ha sido eliminado con éxito!");
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 	
 }

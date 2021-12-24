@@ -21,7 +21,7 @@ public class ComentarioServiceImpl implements IComentarioService {
 
 	@Override
 	public Comentario findById(Long id) {
-		return comentarioDao.findById(id).get();
+		return comentarioDao.findById(id).orElse(null);
 	}
 
 	@Override
@@ -32,6 +32,11 @@ public class ComentarioServiceImpl implements IComentarioService {
 	@Override
 	public void delete(Long id) {
 		comentarioDao.deleteById(id);
+	}
+
+	@Override
+	public List<Comentario> findAllByTicket(Long idTicket) {
+		return comentarioDao.findAllByTicket(idTicket);
 	}
 	
 }
