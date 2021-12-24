@@ -30,7 +30,7 @@ public class UsuarioServicioServiceImpl implements IUsuarioServicioService {
 	}
 
 	@Override
-	public void delte(Long id) {
+	public void delete(Long id) {
 		usuarioServicioDao.deleteById(id);
 	}
 

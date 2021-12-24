@@ -11,6 +11,6 @@ public interface IUsuarioServicioService {
 	public UsuarioServicio findById(Long id);
 	public UsuarioServicio findByIdAndEstado(Long id, String estado);
 	public UsuarioServicio save(UsuarioServicio usuarioServicio);
-	public void delte(Long id);
+	public void delete(Long id);
 	
 }

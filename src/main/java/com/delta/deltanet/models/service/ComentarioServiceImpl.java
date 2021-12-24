@@ -30,7 +30,7 @@ public class ComentarioServiceImpl implements IComentarioService {
 	}
 
 	@Override
-	public void delte(Long id) {
+	public void delete(Long id) {
 		comentarioDao.deleteById(id);
 	}
 	

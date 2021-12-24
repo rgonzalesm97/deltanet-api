@@ -30,7 +30,7 @@ public class AreaServiceImpl implements IAreaService {
 	}
 
 	@Override
-	public void delte(Long id) {
+	public void delete(Long id) {
 		areaDao.deleteById(id);
 	}
 	

@@ -13,6 +13,6 @@ public interface ICatalogoServicioService {
 	public CatalogoServicio findById(Long id);
 	public CatalogoServicio findByIdAndEstado(Long id, String estado);
 	public CatalogoServicio save(CatalogoServicio catalogoServicio);
-	public void delte(Long id);
+	public void delete(Long id);
 	
 }

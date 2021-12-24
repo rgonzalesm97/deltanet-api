@@ -31,7 +31,7 @@ public class CatalogoServicioServiceImpl implements ICatalogoServicioService {
 	}
 
 	@Override
-	public void delte(Long id) {
+	public void delete(Long id) {
 		catalogoServicioDao.deleteById(id);
 	}
 

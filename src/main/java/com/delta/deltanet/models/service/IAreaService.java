@@ -9,6 +9,6 @@ public interface IAreaService {
 	public List<Area> findAll();
 	public Area findById(Long id);
 	public Area save(Area area);
-	public void delte(Long id);
+	public void delete(Long id);
 	
 }

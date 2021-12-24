@@ -13,6 +13,5 @@ public interface IArchivoService {
 	public Archivo findById(Long id);
 	public Archivo save(Archivo archivo);
 	public void delete(Long id);
-	public void registrar(MultipartFile archivo, String tabla, Long idTabla);
-	
+	public void registrar(MultipartFile archivo, String tabla, Long idTabla);	
 }
