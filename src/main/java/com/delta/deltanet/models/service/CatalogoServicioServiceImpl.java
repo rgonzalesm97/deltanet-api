@@ -41,13 +41,13 @@ public class CatalogoServicioServiceImpl implements ICatalogoServicioService {
 	}
 
 	@Override
-	public CatalogoServicio findByIdAndEstado(Long id, String estado) {
+	public CatalogoServicio findByIdAndEstado(Long id, char estado) {
 		return catalogoServicioDao.findByIdAndEstadoRegistro(id, estado);
 	}
 
 	@Override
-	public List<CatalogoServicio> findByAreaAndEstado(Area area, String estado) {
-		return catalogoServicioDao.findByAreaAndEstadoRegstro(area, estado);
+	public List<CatalogoServicio> findByAreaAndEstado(Area area, char estado) {
+		return catalogoServicioDao.findByAreaAndEstadoRegistro(area, estado);
 	}
 
 	

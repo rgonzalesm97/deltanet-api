@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -46,6 +47,7 @@ import com.delta.deltanet.models.service.IPrioridadService;
 import com.delta.deltanet.models.service.ITicketService;
 import com.delta.deltanet.models.service.ITipoAccionService;
 import com.delta.deltanet.models.service.IUsuarioServicioService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
 @RequestMapping("/ticket")
@@ -69,7 +71,7 @@ public class TicketController {
 	private ICatalogoServicioService catalogoServicioService;
 	@Autowired
 	private IUsuarioServicioService usuarioServicioService;
-  @Autowired
+	@Autowired
 	private IHistorialService historialService;
 	@Autowired
 	private IComentarioService comentarioService;
@@ -82,7 +84,6 @@ public class TicketController {
 	
 	//PRIORIDAD
 	@PostMapping("/prioridad/create")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> CreatePrioridad(@RequestParam("nombrePrioridad") String nombrePrioridad, @RequestParam("usuario") String usuarioCreacion){		
 		Prioridad prioridad = new Prioridad();
 		prioridad.setNombre(nombrePrioridad);
@@ -161,7 +162,6 @@ public class TicketController {
 	}
 	
 	@PutMapping("/prioridad/update/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> UpdatePrioridad(@PathVariable Long id, @RequestParam("nombrePrioridad") String nombrePrioridad, @RequestParam("usuario") String usuarioActualizacion) {
 		Prioridad prioridadActual = prioridadService.findById(id);
 		
@@ -216,8 +216,7 @@ public class TicketController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/prioridad/delete/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PutMapping("/prioridad/delete/{id}")
 	public ResponseEntity<?> DeletePrioridad(@PathVariable Long id, @RequestParam("usuario") String usuarioActualizacion) {
 		Prioridad prioridadActual = prioridadService.findById(id);
 		Map<String, Object> response = new HashMap<>();
@@ -272,7 +271,6 @@ public class TicketController {
 	
 	//AREA
 	@PostMapping("/area/create")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> CreateArea(@RequestParam("nombreArea") String nombreArea, @RequestParam("usuario") String usuarioCreacion){
 		Area area = new Area();
 		area.setNombre(nombreArea);
@@ -350,7 +348,6 @@ public class TicketController {
 	}
 	
 	@PutMapping("/area/update/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> UpdateArea(@PathVariable Long id, @RequestParam("nombreArea") String nombreArea, @RequestParam("usuario") String usuarioActualizacion) {
 		Area areaActual = areaService.findById(id);
 		
@@ -404,8 +401,7 @@ public class TicketController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/area/delete/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PutMapping("/area/delete/{id}")
 	public ResponseEntity<?> DeleteArea(@PathVariable Long id, @RequestParam("usuario") String usuarioActualizacion) {
 		Area areaActual = areaService.findById(id);
 		Map<String, Object> response = new HashMap<>();
@@ -460,7 +456,6 @@ public class TicketController {
 	
 	//CATEGORIA
 	@PostMapping("/categoria/create")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> CreateCategoria(@RequestParam("nombreCategoria") String nombreCategoria, @RequestParam("usuario") String usuarioCreacion){
 		Categoria categoria = new Categoria();
 		categoria.setNombre(nombreCategoria);
@@ -537,7 +532,6 @@ public class TicketController {
 	}
 	
 	@PutMapping("/categoria/update/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> UpdateCategoria(@PathVariable Long id, @RequestParam("nombreCategoria") String nombreCategoria, @RequestParam("usuario") String usuarioActualizacion) {
 		Categoria categoriaActual = categoriaService.findById(id);
 		Map<String,Object> response = new HashMap<>();
@@ -591,8 +585,7 @@ public class TicketController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/categoria/delete/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PutMapping("/categoria/delete/{id}")
 	public ResponseEntity<?> DeleteCategoria(@PathVariable Long id, @RequestParam("usuario") String usuarioActualizacion) {
 		Categoria categoriaActual = categoriaService.findById(id);
 		Map<String, Object> response = new HashMap<>();
@@ -647,7 +640,6 @@ public class TicketController {
 	
 	//ESTADO
 	@PostMapping("/estado/create")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> CreateEstado(@RequestParam("nombreEstado") String nombreEstado, @RequestParam("usuario") String usuarioCreacion){
 		Estado estado = new Estado();
 		estado.setNombre(nombreEstado);
@@ -725,7 +717,6 @@ public class TicketController {
 	}
 	
 	@PutMapping("/estado/update/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> UpdateEstado(@PathVariable Long id, @RequestParam("nombreEstado") String nombreEstado, @RequestParam("usuario") String usuarioActualizacion) {
 		Estado estadoActual = estadoService.findById(id);
 		Map<String,Object> response = new HashMap<>();
@@ -779,8 +770,7 @@ public class TicketController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/estado/delete/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PutMapping("/estado/delete/{id}")
 	public ResponseEntity<?> DeleteEstado(@PathVariable Long id, @RequestParam("usuario") String usuarioActualizacion) {
 		Estado estadoActual = estadoService.findById(id);
 		Map<String, Object> response = new HashMap<>();
@@ -835,7 +825,6 @@ public class TicketController {
 	
 	//TIPO ACCION
 	@PostMapping("/tipoAccion/create")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> CreateTipoAccion(@RequestParam("nombreTipoAccion") String nombreTipoAccion, @RequestParam("usuario") String usuarioCreacion){
 		TipoAccion tipoAccion = new TipoAccion();
 		tipoAccion.setNombre(nombreTipoAccion);
@@ -892,7 +881,6 @@ public class TicketController {
 	}
 	
 	@PutMapping("/tipoAccion/update/{id}")
-	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> UpdateTipoAccion(@PathVariable Long id, @RequestParam("nombreTipoAccion") String nombreTipoAccion, @RequestParam("usuario") String usuarioActualizacion) {
 		TipoAccion tipoAccionActual = tipoAccionService.findById(id);
 		Map<String,Object> response = new HashMap<>();
@@ -918,8 +906,7 @@ public class TicketController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/tipoAccion/delete/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PutMapping("/tipoAccion/delete/{id}")
 	public ResponseEntity<?> DeleteTipoAccion(@PathVariable Long id, @RequestParam("usuario") String usuarioActualizacion) {
 		TipoAccion tipoAccionActual = tipoAccionService.findById(id);
 		Map<String, Object> response = new HashMap<>();
@@ -1009,12 +996,21 @@ public class TicketController {
 		}	
 	}
 	
+	//CATALOGOSERVICIO
 	@PostMapping("/catalogo/CreateCatalogoServicio")
 	public ResponseEntity<?> creaCatalogo(@RequestParam("nombreCat") String nomCatalogo,
 			                              @RequestParam("idArea") Long idArea,
 			                              @RequestParam("usuario") String usuario
 			                             ){
 		Map<String, Object> response = new HashMap<>();
+		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("CREARID"))));
+		historial.setTabla(tablas.get("CATALOGO"));
+		historial.setAccion(acciones.get("CREAR"));
+		historial.setUsuCreado(usuario);
+		historial.setFechaCreado(new Date());
+		
 		Area area = null;
 		try {
 			area = areaService.findById(idArea);
@@ -1028,19 +1024,32 @@ public class TicketController {
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
+		CatalogoServicio catalogoCreado = new CatalogoServicio();
+		
 		try {
 			CatalogoServicio catalogo = new CatalogoServicio();
 			catalogo.setNombre(nomCatalogo);
 			catalogo.setArea(area);
 			catalogo.setUsuCreado(usuario);
-			catalogoServicioService.save(catalogo);
-			response.put("mensaje","El catalogo se creo satisfactoriamente.");
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+			catalogoCreado = catalogoServicioService.save(catalogo);
+			
+			try {
+				historial.setTablaId(catalogoCreado.getId());
+				historialService.save(historial);
+			} catch (DataAccessException e) {
+				catalogoServicioService.delete(catalogoCreado.getId());
+				
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			} 
 		} catch (Exception e) {
 			response.put("mensaje","Error al crear catalogo.");
 			response.put("error",e.getMessage());
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
+		response.put("mensaje","El catalogo se creo satisfactoriamente.");
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 	
 	@GetMapping("/catalogo/ReadCatalogoServicio/{id}")
@@ -1048,7 +1057,7 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		CatalogoServicio catalogo = null;
 		try {
-			catalogo = catalogoServicioService.findByIdAndEstado(id, "A");
+			catalogo = catalogoServicioService.findByIdAndEstado(id, 'A');
 			if (catalogo == null) {
 				response.put("mensaje","No se encontraron catalogos.");
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
@@ -1064,24 +1073,30 @@ public class TicketController {
 		
 	}
 	
-	@GetMapping("/catalogo/ReadAllCatalogoServicio/{idArea}")
-	public ResponseEntity<?> listCatalogo(@PathVariable Long idArea) {
+	@GetMapping(value={"/catalogo/ReadAllCatalogoServicio/{idArea}", "/catalogo/ReadAllCatalogoServicio"})
+	public ResponseEntity<?> listCatalogo(@PathVariable Optional<Long> idArea) {
 		Map<String, Object> response = new HashMap<>();
 		List<CatalogoServicio> catalogos = null;
 		Area area = null;
-		try {
-			area=areaService.findById(idArea);
-			if(area == null) {
-				response.put("mensaje","No se encontro el area.");
-				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
-			}
-		} catch (Exception e) {
-			response.put("mensaje","Error al ubicar el area.");
-			response.put("error",e.getMessage());
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		if(idArea.isPresent()) {
+			try {
+				area=areaService.findById(idArea.get());
+				if(area == null) {
+					response.put("mensaje","No se encontro el area.");
+					return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+				}
+			} catch (Exception e) {
+				response.put("mensaje","Error al ubicar el area.");
+				response.put("error",e.getMessage());
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			}			
 		}
 		try {
-			catalogos = catalogoServicioService.findByAreaAndEstado(area, "A");
+			if(idArea.isPresent()) {
+				catalogos = catalogoServicioService.findByAreaAndEstado(area, 'A');				
+			}else {
+				catalogos = catalogoServicioService.findAll();
+			}
 			if (catalogos == null) {
 				response.put("mensaje","No se encontraron catalogos para el area requerida.");
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
@@ -1127,19 +1142,48 @@ public class TicketController {
 			response.put("error",e.getMessage());
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("EDITARID"))));
+		historial.setTabla(tablas.get("CATALOGO"));
+		historial.setTablaId(id);
+		historial.setAccion(acciones.get("EDITAR"));
+		historial.setUsuCreado(usuario);
+		historial.setFechaCreado(new Date());
+		
+		CatalogoServicio catalogoBack = new CatalogoServicio();
+		catalogoBack.setId(catalogo.getId());
+		catalogoBack.setArea(catalogo.getArea());
+		catalogoBack.setUsuarioServicios(catalogo.getUsuarioServicios());//Revisar si esto no genera conflictos
+		catalogoBack.setNombre(catalogo.getNombre());
+		catalogoBack.setUsuCreado(catalogo.getUsuCreado());
+		catalogoBack.setFechaCreado(catalogo.getFechaCreado());
+		catalogoBack.setUsuEditado(catalogo.getUsuEditado());
+		catalogoBack.setFechaEditado(catalogo.getFechaEditado());
+		catalogoBack.setEstadoRegistro(catalogo.getEstadoRegistro());
+		
 		try {
 			catalogo.setNombre(nombreCat);
 			catalogo.setArea(area);
 			catalogo.setUsuEditado(usuario);
 			catalogo.setFechaEditado(new Date());
 			catalogoServicioService.save(catalogo);
-			response.put("mensaje","Se actualizo el catalogo.");
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+			try {
+				historialService.save(historial);
+			} catch (DataAccessException e) {
+				catalogoServicioService.save(catalogoBack);
+				
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} catch (Exception e) {
 			response.put("mensaje","Error al actualizar catalogo.");
 			response.put("error",e.getMessage());
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		response.put("mensaje","Se actualizo el catalogo.");
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 	
 	@PutMapping("/catalogo/DeleteCatalogoServicio")
@@ -1159,20 +1203,52 @@ public class TicketController {
 			response.put("error",e.getMessage());
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("ELIMINARID"))));
+		historial.setTabla(tablas.get("CATALOGO"));
+		historial.setTablaId(id);
+		historial.setAccion(acciones.get("ELIMINAR"));
+		historial.setUsuCreado(usuario);
+		historial.setFechaCreado(new Date());
+		
+		CatalogoServicio catalogoBack = new CatalogoServicio();
+		catalogoBack.setId(catalogo.getId());
+		catalogoBack.setArea(catalogo.getArea());
+		catalogoBack.setUsuarioServicios(catalogo.getUsuarioServicios());//Revisar si esto no genera conflictos
+		catalogoBack.setNombre(catalogo.getNombre());
+		catalogoBack.setUsuCreado(catalogo.getUsuCreado());
+		catalogoBack.setFechaCreado(catalogo.getFechaCreado());
+		catalogoBack.setUsuEditado(catalogo.getUsuEditado());
+		catalogoBack.setFechaEditado(catalogo.getFechaEditado());
+		catalogoBack.setEstadoRegistro(catalogo.getEstadoRegistro());
+		
 		try {
 			catalogo.setEstadoRegistro('B');
 			catalogo.setUsuEditado(usuario);
 			catalogo.setFechaEditado(new Date());
+			
 			catalogoServicioService.save(catalogo);
-			response.put("mensaje","Se elimino el catalogo.");
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+			
+			try {
+				historialService.save(historial);
+			} catch (DataAccessException e) {
+				catalogoServicioService.save(catalogoBack);
+				
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} catch (Exception e) {
 			response.put("mensaje","Error al eliminar catalogo.");
 			response.put("error",e.getMessage());
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		response.put("mensaje","Se elimino el catalogo.");
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 	
+	//USUARIO
 	@PostMapping("/usuario/CreateUsuarioServicio")
 	public ResponseEntity<?> creaUsuario(@RequestParam("usuario") String usuario,
 			                             @RequestParam("nombre") String nombre,
@@ -1182,20 +1258,43 @@ public class TicketController {
 			                            ){
 		Map<String, Object> response = new HashMap<>();
 		UsuarioServicio user = new UsuarioServicio();
+		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("CREARID"))));
+		historial.setTabla(tablas.get("USUARIO"));
+		historial.setAccion(acciones.get("CREAR"));
+		historial.setUsuCreado(userCrea);
+		historial.setFechaCreado(new Date());
+		
+		UsuarioServicio userCreado = new UsuarioServicio();
+		
 		try {
 			user.setUsuario(usuario);
 			user.setNombre(nombre);
 			user.setApellidos(apellido);
 			user.setRol(rol);
 			user.setUsuCreado(userCrea);
-			usuarioServicioService.save(user);
-			response.put("mensaje","Se creo el usuario satisfactoriamente.");
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+			
+			userCreado = usuarioServicioService.save(user);
+			
+			try {
+				
+				historial.setTablaId(userCreado.getId());
+				historialService.save(historial);
+			} catch (DataAccessException e) {
+				usuarioServicioService.delete(userCreado.getId());
+				
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			} 
 		} catch (Exception e) {
 			response.put("mensaje","Error al crear usuario.");
 			response.put("error",e.getMessage());
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
+		response.put("mensaje","Se creo el usuario satisfactoriamente.");
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 	
 	@GetMapping("/usuario/ReadUsuarioServicio/{id}")
@@ -1203,12 +1302,12 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		UsuarioServicio usuario = null;
 		try {
-			usuario = usuarioServicioService.findByIdAndEstado(id, "A");
+			usuario = usuarioServicioService.findByIdAndEstado(id, 'A');
 			if (usuario == null) {
 				response.put("mensaje","No se encontro el usuario.");
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
 			}
-			response.put("mensaje","Se creo el usuario satisfactoriamente.");
+			response.put("usuario", usuario);
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 		} catch (Exception e) {
 			response.put("mensaje","Error al buscar usuario.");
@@ -1246,7 +1345,7 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		UsuarioServicio user = null;
 		try {
-			user=usuarioServicioService.findByIdAndEstado(idUser, "A");
+			user=usuarioServicioService.findByIdAndEstado(idUser, 'A');
 			if (user==null) {
 				response.put("mensaje","Usuario no encontrado.");
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
@@ -1257,6 +1356,26 @@ public class TicketController {
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("EDITARID"))));
+		historial.setTabla(tablas.get("USUARIO"));
+		historial.setTablaId(idUser);
+		historial.setAccion(acciones.get("EDITAR"));
+		historial.setUsuCreado(userActu);
+		historial.setFechaCreado(new Date());
+		
+		UsuarioServicio userBack = new UsuarioServicio();
+		userBack.setId(user.getId());
+		userBack.setCatalogoServicios(user.getCatalogoServicios());//Revisar si esto no genera conflictos
+		userBack.setNombre(user.getNombre());
+		userBack.setApellidos(user.getApellidos());
+		userBack.setRol(user.getRol());
+		userBack.setUsuCreado(user.getUsuCreado());
+		userBack.setFechaCreado(user.getFechaCreado());
+		userBack.setUsuEditado(user.getUsuEditado());
+		userBack.setFechaEditado(user.getFechaEditado());
+		userBack.setEstadoRegistro(user.getEstadoRegistro());
+		
 		try {
 			user.setNombre(nombre);
 			user.setApellidos(apellido);
@@ -1264,13 +1383,23 @@ public class TicketController {
 			user.setUsuEditado(userActu);
 			user.setFechaEditado(new Date());
 			usuarioServicioService.save(user);
-			response.put("mensaje","Se actualizo el usuario satisfactoriamente.");
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+			
+			try {
+				historialService.save(historial);
+			} catch (DataAccessException e) {
+				usuarioServicioService.save(userBack);
+				
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} catch (Exception e) {
 			response.put("mensaje","Error al actualizar usuario.");
 			response.put("error",e.getMessage());
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
+		response.put("mensaje","Se actualizo el usuario satisfactoriamente.");
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 	
 	@PutMapping("/usuario/DeleteUsuarioServicio")
@@ -1280,7 +1409,7 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		UsuarioServicio user = null;
 		try {
-			user=usuarioServicioService.findByIdAndEstado(idUser, "A");
+			user=usuarioServicioService.findByIdAndEstado(idUser, 'A');
 			if (user==null) {
 				response.put("mensaje","Usuario no encontrado.");
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
@@ -1291,18 +1420,48 @@ public class TicketController {
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("ELIMINARID"))));
+		historial.setTabla(tablas.get("USUARIO"));
+		historial.setTablaId(idUser);
+		historial.setAccion(acciones.get("ELIMINAR"));
+		historial.setUsuCreado(userActu);
+		historial.setFechaCreado(new Date());
+		
+		UsuarioServicio userBack = new UsuarioServicio();
+		userBack.setId(user.getId());
+		userBack.setCatalogoServicios(user.getCatalogoServicios());//Revisar si esto no genera conflictos
+		userBack.setNombre(user.getNombre());
+		userBack.setApellidos(user.getApellidos());
+		userBack.setRol(user.getRol());
+		userBack.setUsuCreado(user.getUsuCreado());
+		userBack.setFechaCreado(user.getFechaCreado());
+		userBack.setUsuEditado(user.getUsuEditado());
+		userBack.setFechaEditado(user.getFechaEditado());
+		userBack.setEstadoRegistro(user.getEstadoRegistro());
+		
 		try {
 			user.setEstadoRegistro('B');
 			user.setUsuEditado(userActu);
 			user.setFechaEditado(new Date());
 			usuarioServicioService.save(user);
-			response.put("mensaje","Se elimino el usuario satisfactoriamente.");
-			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+			
+			try {
+				historialService.save(historial);
+			} catch (DataAccessException e) {
+				usuarioServicioService.save(userBack);
+				
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} catch (Exception e) {
 			response.put("mensaje","Error al eliminar usuario.");
 			response.put("error",e.getMessage());
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
+		response.put("mensaje","Se elimino el usuario satisfactoriamente.");
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 
 	//HISTORIAL
@@ -1508,4 +1667,73 @@ public class TicketController {
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
 	}
 	
+	//TICKET
+	@PostMapping("/create")
+	public ResponseEntity<?> CreateTicket(@RequestParam("titulo") String titulo, 
+											@RequestParam("descripcion") String descripcion,
+											@RequestParam("tipoUsuario") char tipoUsuario,
+											@RequestParam("idPrioridad") Long idPrioridad,
+											@RequestParam("idCategoria") Long idCategoria,
+											@RequestParam("idCatalogoServicio") Long idCatalogoServicio,
+											@RequestParam("idAreaOrigen") Long idAreaOrigen,
+											@RequestParam("idAreaDestino") Long idAreaDestino,
+											@RequestParam("usuCrea") String usuCrea){
+		Ticket ticket = new Ticket();		
+		Prioridad prioridad = prioridadService.findById(idPrioridad);
+		Categoria categoria = categoriaService.findById(idCategoria);
+		CatalogoServicio catalogoServicio = catalogoServicioService.findById(idCatalogoServicio);
+		Area areaOrigen = areaService.findById(idAreaOrigen);
+		Area areaDestino = areaService.findById(idAreaDestino);
+		UsuarioServicio usuarioServicio = usuarioServicioService.findById(Long.valueOf(2));//ARREGLAR - no puede ser null
+		Estado estado = estadoService.findById(Long.valueOf(2));//ARREGLAR - no puede ser null
+		
+		Historial historial = new Historial();
+		historial.setTipoAccionId(tipoAccionService.findById(Long.valueOf(acciones.get("CREARID"))));
+		historial.setTabla(tablas.get("TICKET"));
+		historial.setAccion(acciones.get("CREAR"));
+		historial.setUsuCreado(usuCrea);
+		historial.setFechaCreado(new Date());
+		
+		Ticket ticketCreado = new Ticket();
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			ticket.setId(Long.valueOf(1));//ARREGLAR - no es autoincremental
+			ticket.setTitulo(titulo);
+			ticket.setDescripcion(descripcion);
+			ticket.setUsuarioCreador(usuCrea);
+			ticket.setTipoUsuarioCreador(tipoUsuario);
+			ticket.setAreaDestino(areaDestino);
+			ticket.setAreaOrigen(areaOrigen);
+			ticket.setCatalogoServicio(catalogoServicio);
+			ticket.setCategoria(categoria);
+			ticket.setPrioridad(prioridad);
+			ticket.setUsuarioServicio(usuarioServicio);//ARREGLAR
+			ticket.setEstado(estado);//ARREGLAR
+			ticket.setUsuCreado(usuCrea);
+			ticket.setFechaCreado(new Date());
+			
+			ticketCreado = ticketService.save(ticket);
+			
+			try {
+				
+				historial.setTablaId(ticketCreado.getId());
+				historialService.save(historial);
+			} catch (DataAccessException e) {
+				estadoService.delete(ticketCreado.getId());
+				
+				response.put("mensaje", "Error al realizar el insert en la base de datos");
+				response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+			} 
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar el insert en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		response.put("mensaje", "El ticket ha sido creado con éxito!");
+		
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);
+	}
 }
