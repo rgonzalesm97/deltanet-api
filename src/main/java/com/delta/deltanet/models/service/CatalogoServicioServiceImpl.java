@@ -46,7 +46,7 @@ public class CatalogoServicioServiceImpl implements ICatalogoServicioService {
 	}
 
 	@Override
-	public List<CatalogoServicio> findByAreaAndEstado(Area area, char estado) {
+	public List<CatalogoServicio> findByAreaAndEstado(Area area, String estado) {
 		return catalogoServicioDao.findByAreaAndEstadoRegistro(area, estado);
 	}
 

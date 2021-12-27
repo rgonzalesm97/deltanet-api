@@ -2,7 +2,6 @@ package com.delta.deltanet.models.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -36,13 +33,13 @@ public class CatalogoServicio implements Serializable{
 	private Area area;
 	
 	//many to many con usuarioServicio
-	@ManyToMany
+	/*@ManyToMany
 	@JoinTable(
 			name="usuario_catalogo",
 			joinColumns= @JoinColumn(name="catalogo_servicio_id"),
 			inverseJoinColumns = @JoinColumn(name="usuario_servicio_id")
 	)
-	private Set<UsuarioServicio> usuarioServicios;
+	private Set<UsuarioServicio> usuarioServicios;*/
 	
 	
 	@Column(name = "nombre", length = 100, nullable = false)
@@ -63,12 +60,12 @@ public class CatalogoServicio implements Serializable{
 	private Date fechaEditado;
 	
 	@Column(name = "estado_registro", nullable = false)
-	private char estadoRegistro;
+	private String estadoRegistro;
 	
 	@PrePersist
 	public void prePersist() {
 		fechaCreado = new Date();
-		estadoRegistro = 'A';
+		estadoRegistro = "A";
 	}
 	
 	public Long getId() {
@@ -87,13 +84,13 @@ public class CatalogoServicio implements Serializable{
 		this.area = area;
 	}
 
-	public Set<UsuarioServicio> getUsuarioServicios() {
+	/*public Set<UsuarioServicio> getUsuarioServicios() {
 		return usuarioServicios;
 	}
 
 	public void setUsuarioServicios(Set<UsuarioServicio> usuarioServicios) {
 		this.usuarioServicios = usuarioServicios;
-	}
+	}*/
 
 	public String getNombre() {
 		return nombre;
@@ -134,21 +131,16 @@ public class CatalogoServicio implements Serializable{
 	public void setFechaEditado(Date fechaEditado) {
 		this.fechaEditado = fechaEditado;
 	}
+	
+	
+	
 
-	public char getEstadoRegistro() {
+	public String getEstadoRegistro() {
 		return estadoRegistro;
 	}
 
-	public void setEstadoRegistro(char estadoRegistro) {
+	public void setEstadoRegistro(String estadoRegistro) {
 		this.estadoRegistro = estadoRegistro;
-	}
-	
-
-	@Override
-	public String toString() {
-		return "CatalogoServicio [id=" + id + ", area=" + area + ", usuarioServicios=" + usuarioServicios + ", nombre="
-				+ nombre + ", usuCreado=" + usuCreado + ", fechaCreado=" + fechaCreado + ", usuEditado=" + usuEditado
-				+ ", fechaEditado=" + fechaEditado + ", estadoRegistro=" + estadoRegistro + "]";
 	}
 
 

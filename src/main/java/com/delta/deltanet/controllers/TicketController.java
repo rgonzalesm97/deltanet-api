@@ -1224,7 +1224,7 @@ public class TicketController {
 		catalogoBack.setEstadoRegistro(catalogo.getEstadoRegistro());
 		
 		try {
-			catalogo.setEstadoRegistro('B');
+			catalogo.setEstadoRegistro("B");
 			catalogo.setUsuEditado(usuario);
 			catalogo.setFechaEditado(new Date());
 			
@@ -1441,7 +1441,7 @@ public class TicketController {
 		userBack.setEstadoRegistro(user.getEstadoRegistro());
 		
 		try {
-			user.setEstadoRegistro('B');
+			user.setEstadoRegistro("B");
 			user.setUsuEditado(userActu);
 			user.setFechaEditado(new Date());
 			usuarioServicioService.save(user);
