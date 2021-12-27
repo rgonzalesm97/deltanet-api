@@ -21,7 +21,7 @@ public class TicketServiceImpl implements ITicketService {
 
 	@Override
 	public Ticket findById(Long id) {
-		return ticketDao.findById(id).get();
+		return ticketDao.findById(id).orElse(null);
 	}
 
 	@Override

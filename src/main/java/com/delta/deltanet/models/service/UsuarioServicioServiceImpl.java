@@ -41,7 +41,7 @@ public class UsuarioServicioServiceImpl implements IUsuarioServicioService {
 
 	@Override
 	public List<UsuarioServicio> listado() {
-		return usuarioServicioDao.findByEstadoRegistro('A');
+		return usuarioServicioDao.findByEstadoRegistro("A");
 	}
 	
 }
