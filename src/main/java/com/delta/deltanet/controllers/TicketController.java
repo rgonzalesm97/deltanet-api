@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -47,7 +46,6 @@ import com.delta.deltanet.models.service.IPrioridadService;
 import com.delta.deltanet.models.service.ITicketService;
 import com.delta.deltanet.models.service.ITipoAccionService;
 import com.delta.deltanet.models.service.IUsuarioServicioService;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
 @RequestMapping("/ticket")
@@ -1154,7 +1152,7 @@ public class TicketController {
 		CatalogoServicio catalogoBack = new CatalogoServicio();
 		catalogoBack.setId(catalogo.getId());
 		catalogoBack.setArea(catalogo.getArea());
-		//catalogoBack.setUsuarioServicios(catalogo.getUsuarioServicios());//Revisar si esto no genera conflictos
+		catalogoBack.setUsuarios(catalogo.getUsuarios());
 		catalogoBack.setNombre(catalogo.getNombre());
 		catalogoBack.setUsuCreado(catalogo.getUsuCreado());
 		catalogoBack.setFechaCreado(catalogo.getFechaCreado());
@@ -1215,7 +1213,7 @@ public class TicketController {
 		CatalogoServicio catalogoBack = new CatalogoServicio();
 		catalogoBack.setId(catalogo.getId());
 		catalogoBack.setArea(catalogo.getArea());
-		//catalogoBack.setUsuarioServicios(catalogo.getUsuarioServicios());//Revisar si esto no genera conflictos
+		catalogoBack.setUsuarios(catalogo.getUsuarios());
 		catalogoBack.setNombre(catalogo.getNombre());
 		catalogoBack.setUsuCreado(catalogo.getUsuCreado());
 		catalogoBack.setFechaCreado(catalogo.getFechaCreado());
