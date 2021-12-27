@@ -2,6 +2,7 @@ package com.delta.deltanet.models.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -33,13 +35,8 @@ public class CatalogoServicio implements Serializable{
 	private Area area;
 	
 	//many to many con usuarioServicio
-	/*@ManyToMany
-	@JoinTable(
-			name="usuario_catalogo",
-			joinColumns= @JoinColumn(name="catalogo_servicio_id"),
-			inverseJoinColumns = @JoinColumn(name="usuario_servicio_id")
-	)
-	private Set<UsuarioServicio> usuarioServicios;*/
+	@ManyToMany(mappedBy = "catalogoServicios")
+	private List<UsuarioServicio> usuarios;
 	
 	
 	@Column(name = "nombre", length = 100, nullable = false)
@@ -134,6 +131,14 @@ public class CatalogoServicio implements Serializable{
 	
 	
 	
+
+	public List<UsuarioServicio> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(List<UsuarioServicio> usuarios) {
+		this.usuarios = usuarios;
+	}
 
 	public String getEstadoRegistro() {
 		return estadoRegistro;
