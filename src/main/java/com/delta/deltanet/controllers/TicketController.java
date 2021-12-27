@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -47,7 +46,6 @@ import com.delta.deltanet.models.service.IPrioridadService;
 import com.delta.deltanet.models.service.ITicketService;
 import com.delta.deltanet.models.service.ITipoAccionService;
 import com.delta.deltanet.models.service.IUsuarioServicioService;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @RestController
 @RequestMapping("/ticket")
@@ -1057,7 +1055,7 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		CatalogoServicio catalogo = null;
 		try {
-			catalogo = catalogoServicioService.findByIdAndEstado(id, 'A');
+			catalogo = catalogoServicioService.findByIdAndEstado(id, "A");
 			if (catalogo == null) {
 				response.put("mensaje","No se encontraron catalogos.");
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
@@ -1093,7 +1091,7 @@ public class TicketController {
 		}
 		try {
 			if(idArea.isPresent()) {
-				catalogos = catalogoServicioService.findByAreaAndEstado(area, 'A');				
+				catalogos = catalogoServicioService.findByAreaAndEstado(area, "A");				
 			}else {
 				catalogos = catalogoServicioService.findAll();
 			}
@@ -1154,7 +1152,8 @@ public class TicketController {
 		CatalogoServicio catalogoBack = new CatalogoServicio();
 		catalogoBack.setId(catalogo.getId());
 		catalogoBack.setArea(catalogo.getArea());
-		catalogoBack.setUsuarioServicios(catalogo.getUsuarioServicios());//Revisar si esto no genera conflictos
+		//catalogoBack.setUsuarioServicios(catalogo.getUsuarios();
+		catalogoBack.setUsuarios(catalogo.getUsuarios());
 		catalogoBack.setNombre(catalogo.getNombre());
 		catalogoBack.setUsuCreado(catalogo.getUsuCreado());
 		catalogoBack.setFechaCreado(catalogo.getFechaCreado());
@@ -1215,7 +1214,8 @@ public class TicketController {
 		CatalogoServicio catalogoBack = new CatalogoServicio();
 		catalogoBack.setId(catalogo.getId());
 		catalogoBack.setArea(catalogo.getArea());
-		catalogoBack.setUsuarioServicios(catalogo.getUsuarioServicios());//Revisar si esto no genera conflictos
+		//catalogoBack.setUsuarioServicios(catalogo.getUsuarioServicios());//Revisar si esto no genera conflictos
+		catalogoBack.setUsuarios(catalogo.getUsuarios());
 		catalogoBack.setNombre(catalogo.getNombre());
 		catalogoBack.setUsuCreado(catalogo.getUsuCreado());
 		catalogoBack.setFechaCreado(catalogo.getFechaCreado());
@@ -1302,7 +1302,7 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		UsuarioServicio usuario = null;
 		try {
-			usuario = usuarioServicioService.findByIdAndEstado(id, 'A');
+			usuario = usuarioServicioService.findByIdAndEstado(id, "A");
 			if (usuario == null) {
 				response.put("mensaje","No se encontro el usuario.");
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
@@ -1345,7 +1345,7 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		UsuarioServicio user = null;
 		try {
-			user=usuarioServicioService.findByIdAndEstado(idUser, 'A');
+			user=usuarioServicioService.findByIdAndEstado(idUser, "A");
 			if (user==null) {
 				response.put("mensaje","Usuario no encontrado.");
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
@@ -1409,7 +1409,7 @@ public class TicketController {
 		Map<String, Object> response = new HashMap<>();
 		UsuarioServicio user = null;
 		try {
-			user=usuarioServicioService.findByIdAndEstado(idUser, 'A');
+			user=usuarioServicioService.findByIdAndEstado(idUser, "A");
 			if (user==null) {
 				response.put("mensaje","Usuario no encontrado.");
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
