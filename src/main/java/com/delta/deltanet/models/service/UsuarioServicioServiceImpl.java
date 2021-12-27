@@ -35,13 +35,13 @@ public class UsuarioServicioServiceImpl implements IUsuarioServicioService {
 	}
 
 	@Override
-	public UsuarioServicio findByIdAndEstado(Long id, String estado) {
+	public UsuarioServicio findByIdAndEstado(Long id, char estado) {
 		return usuarioServicioDao.findByIdAndEstadoRegistro(id, estado);
 	}
 
 	@Override
 	public List<UsuarioServicio> listado() {
-		return usuarioServicioDao.findByEstadoRegistro("A");
+		return usuarioServicioDao.findByEstadoRegistro('A');
 	}
 	
 }

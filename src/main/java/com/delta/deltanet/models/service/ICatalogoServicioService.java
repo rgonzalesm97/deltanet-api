@@ -9,9 +9,9 @@ public interface ICatalogoServicioService {
 	
 	public List<CatalogoServicio> findAll();
 	public List<CatalogoServicio> findByArea(Area area);
-	public List<CatalogoServicio> findByAreaAndEstado(Area area, String estado);
+	public List<CatalogoServicio> findByAreaAndEstado(Area area, char estado);
 	public CatalogoServicio findById(Long id);
-	public CatalogoServicio findByIdAndEstado(Long id, String estado);
+	public CatalogoServicio findByIdAndEstado(Long id, char estado);
 	public CatalogoServicio save(CatalogoServicio catalogoServicio);
 	public void delete(Long id);
 	
