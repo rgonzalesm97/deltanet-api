@@ -1160,7 +1160,7 @@ public class TicketController {
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		try {
-			catalogo.setEstadoRegistro('B');
+			catalogo.setEstadoRegistro("B");
 			catalogo.setUsuEditado(usuario);
 			catalogo.setFechaEditado(new Date());
 			catalogoServicioService.save(catalogo);
@@ -1292,7 +1292,7 @@ public class TicketController {
 		}
 		
 		try {
-			user.setEstadoRegistro('B');
+			user.setEstadoRegistro("B");
 			user.setUsuEditado(userActu);
 			user.setFechaEditado(new Date());
 			usuarioServicioService.save(user);
