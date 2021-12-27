@@ -13,5 +13,5 @@ public interface IUsuarioServicioDao extends JpaRepository<UsuarioServicio, Long
 	public List<UsuarioServicio> findAll();
 	public List<UsuarioServicio> findByEstadoRegistro(char estado);
 	
-	public UsuarioServicio findByIdAndEstadoRegistro(Long id, char estado);
+	public UsuarioServicio findByIdAndEstadoRegistro(Long id, String estado);
 }
