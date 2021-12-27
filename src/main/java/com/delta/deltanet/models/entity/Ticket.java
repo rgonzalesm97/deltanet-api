@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Ticket implements Serializable{
 	
 	@Id
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 	
@@ -54,7 +54,7 @@ public class Ticket implements Serializable{
 	private Prioridad prioridad;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "usuario_servicio_id", referencedColumnName = "id")
+	@JoinColumn(name = "usuario_servicio_id", referencedColumnName = "id", nullable = false)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private UsuarioServicio usuarioServicio;
 	
@@ -86,7 +86,7 @@ public class Ticket implements Serializable{
 	private Date fechaEditado;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "estado_id", referencedColumnName = "id")
+	@JoinColumn(name = "estado_id", referencedColumnName = "id", nullable = false)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Estado estado;
 	

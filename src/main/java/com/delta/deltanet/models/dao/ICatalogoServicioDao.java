@@ -17,6 +17,6 @@ public interface ICatalogoServicioDao extends JpaRepository<CatalogoServicio, Lo
 
 	public List<CatalogoServicio> findByAreaAndEstadoRegistro(Area area, String Estado);
 
-	public CatalogoServicio findByIdAndEstadoRegistro(Long id, char estado);
+	public CatalogoServicio findByIdAndEstadoRegistro(Long id, String estado);
 	
 }
