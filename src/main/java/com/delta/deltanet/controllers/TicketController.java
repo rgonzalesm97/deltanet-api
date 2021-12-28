@@ -1871,4 +1871,37 @@ public class TicketController {
 			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}	
 	}
+	
+	//MI VISTA
+	@GetMapping("/mivista/read")
+	public ResponseEntity<?> ReadMiVista(@RequestParam("usuario") String usuario,
+											@RequestParam("idUsuario") Long idUsuario,
+											@RequestParam("idArea") Long idArea,
+											@RequestParam("rol") Long rol) {
+		Map<String, Object> response = new HashMap<>();
+		
+		List<Ticket> ticketsAsignados= ticketService.findAllByUsuarioServicio(idUsuario);
+		
+		
+		response.put("ticketsAsignados", ticketsAsignados);
+		
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+	}
+	
+	//GENERAR TICKET READ
+	@GetMapping("/generarTicket/read")
+	public ResponseEntity<?> ReadGenerarTicket() {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		List<Area> areas= areaService.findAll();
+		List<Prioridad> prioridades = prioridadService.findAll();
+		List<Categoria> categorias = categoriaService.findAll();
+		
+		response.put("areas", areas);
+		response.put("prioridades", prioridades);
+		response.put("categorias", categorias);
+		
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+	}
 }

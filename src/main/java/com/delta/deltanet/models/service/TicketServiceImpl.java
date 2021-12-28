@@ -33,5 +33,10 @@ public class TicketServiceImpl implements ITicketService {
 	public void delete(Long id) {
 		ticketDao.deleteById(id);
 	}
+
+	@Override
+	public List<Ticket> findAllByUsuarioServicio(Long id) {
+		return ticketDao.findAllByUsuarioServicio(id);
+	}
 	
 }

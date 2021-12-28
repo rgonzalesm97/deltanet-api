@@ -10,5 +10,6 @@ public interface ITicketService {
 	public Ticket findById(Long id);
 	public Ticket save(Ticket ticket);
 	public void delete(Long id);
+	public List<Ticket> findAllByUsuarioServicio(Long id);
 	
 }

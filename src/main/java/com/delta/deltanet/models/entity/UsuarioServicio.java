@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.FetchType;
 
 @Entity
@@ -31,6 +34,7 @@ public class UsuarioServicio implements Serializable{
 	
 	//many to many con catalogoSerivicio
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	@JoinTable(name="usuario_catalogo", joinColumns = @JoinColumn(name="usuario_servicio_id"), inverseJoinColumns = @JoinColumn(name="catalogo_servicio_id"), uniqueConstraints = {
 			@UniqueConstraint(columnNames = {"usuario_servicio_id","catalogo_servicio_id"}) })
 	private List<CatalogoServicio> catalogoServicios;
