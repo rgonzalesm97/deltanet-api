@@ -61,8 +61,8 @@ public class Ticket implements Serializable{
 	@Column(name = "usuario_creador", length = 50, nullable = false)
 	private String usuarioCreador;
 	
-	@Column(name = "tipo_usuario_creador", nullable = false)
-	private char tipoUsuarioCreador;
+	@Column(name = "tipo_usuario_creador", length = 1, nullable = false)
+	private String tipoUsuarioCreador;
 	
 	@Column(name = "titulo", length = 150, nullable = false)
 	private String titulo;
@@ -93,7 +93,7 @@ public class Ticket implements Serializable{
 	@PrePersist
 	public void prePersist() {
 		//fechaCreado = new Date();
-		tipoUsuarioCreador = 'I';
+		tipoUsuarioCreador = "I";
 	}
 	
 	
@@ -177,12 +177,12 @@ public class Ticket implements Serializable{
 	}
 
 
-	public char getTipoUsuarioCreador() {
+	public String getTipoUsuarioCreador() {
 		return tipoUsuarioCreador;
 	}
 
 
-	public void setTipoUsuarioCreador(char tipoUsuarioCreador) {
+	public void setTipoUsuarioCreador(String tipoUsuarioCreador) {
 		this.tipoUsuarioCreador = tipoUsuarioCreador;
 	}
 

@@ -11,5 +11,19 @@ public interface ITicketService {
 	public Ticket save(Ticket ticket);
 	public void delete(Long id);
 	public List<Ticket> findAllByUsuarioServicio(Long id);
+	public List<Ticket> findAllByUsuarioServicioNull();
+	public List<Ticket> findAllByUsuarioCreador(String usuario);
+	public List<Ticket> findAllResueltos(String usuario, Long usuarioServicioId, Long areaId);
+	public List<Ticket> findAllResueltosByUsuarioCreador(String usuario);
+	public List<Ticket> findAllResueltosAdmin(Long areaId);
+	public List<Ticket> findAllModificados();
+	public List<Ticket> findAllFiltro(Long idAreaOrigen,
+										Long idAreaDestino,
+										String tipoUsuario,
+										Long idPrioridad,
+										Long idCategoria,
+										Long idCatalogoServicio,
+										String usuarioCrea);
+	
 	
 }

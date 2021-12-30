@@ -36,6 +36,7 @@ public class CatalogoServicio implements Serializable{
 	
 	//many to many con usuarioServicio
 	@ManyToMany(mappedBy = "catalogoServicios")
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<UsuarioServicio> usuarios;
 	
 	

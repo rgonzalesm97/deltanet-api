@@ -45,5 +45,10 @@ public class HistorialServiceImpl implements IHistorialService {
 		historialDao.deleteById(id);
 	}
 
+	@Override
+	public List<Historial> findHistorialTicket(Long idTabla) {
+		return historialDao.findHistorialTicket(idTabla);
+	}
+
 	
 }

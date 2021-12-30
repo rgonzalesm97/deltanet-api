@@ -12,5 +12,6 @@ public interface IHistorialService {
 	public List<Historial> findAllByItem(String tabla, Long idTabla);
 	public Historial save(Historial historial);
 	public void delete(Long id);
+	public List<Historial> findHistorialTicket(Long idTabla);
 	
 }

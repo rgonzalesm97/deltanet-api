@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.FetchType;
 
@@ -37,6 +38,7 @@ public class UsuarioServicio implements Serializable{
 	@JsonIgnore
 	@JoinTable(name="usuario_catalogo", joinColumns = @JoinColumn(name="usuario_servicio_id"), inverseJoinColumns = @JoinColumn(name="catalogo_servicio_id"), uniqueConstraints = {
 			@UniqueConstraint(columnNames = {"usuario_servicio_id","catalogo_servicio_id"}) })
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private List<CatalogoServicio> catalogoServicios;
 	
 	@Column(name = "usuario", length = 50, nullable = false)

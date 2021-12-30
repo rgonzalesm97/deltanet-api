@@ -38,5 +38,41 @@ public class TicketServiceImpl implements ITicketService {
 	public List<Ticket> findAllByUsuarioServicio(Long id) {
 		return ticketDao.findAllByUsuarioServicio(id);
 	}
+
+	@Override
+	public List<Ticket> findAllByUsuarioServicioNull() {
+		return ticketDao.findAllByUsuarioServicioNull();
+	}
+
+	@Override
+	public List<Ticket> findAllResueltos(String usuario, Long usuarioServicioId, Long areaId) {
+		return ticketDao.findAllResueltos(usuario, usuarioServicioId, areaId);
+	}
+
+	@Override
+	public List<Ticket> findAllResueltosAdmin(Long areaId) {
+		return ticketDao.findAllResueltosAdmin(areaId);
+	}
+
+	@Override
+	public List<Ticket> findAllModificados() {
+		return ticketDao.findAllModificados();
+	}
+
+	@Override
+	public List<Ticket> findAllFiltro(Long idAreaOrigen, Long idAreaDestino, String tipoUsuario, Long idPrioridad,
+			Long idCategoria, Long idCatalogoServicio, String usuarioCrea) {
+		return ticketDao.findAllFiltro(idAreaOrigen, idAreaDestino, tipoUsuario, idPrioridad, idCategoria, idCatalogoServicio, usuarioCrea);	
+	}
+
+	@Override
+	public List<Ticket> findAllByUsuarioCreador(String usuario) {
+		return ticketDao.findAllByUsuarioCreador(usuario);
+	}
+
+	@Override
+	public List<Ticket> findAllResueltosByUsuarioCreador(String usuario) {
+		return ticketDao.findAllResueltosByUsuarioCreador(usuario);
+	}
 	
 }
